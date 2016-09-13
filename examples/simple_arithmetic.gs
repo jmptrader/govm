@@ -14,6 +14,10 @@ cpy	%2	%0	Rescue
 sub	%1	%0	Subtract and show
 shw	%0
 
+cpy	%2	%0	Rescue
+div	%1	%0	Divide and show
+shw	%0
+
 cpy	%0	%3	Save
 cel	%0		Ceil and show
 shw	%0

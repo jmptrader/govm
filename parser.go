@@ -1,0 +1,180 @@
+package main
+
+// Besides instructions additional syntax is involved in
+// labels and jumping.
+// Also anything after an instruction and its arguments
+// is a valid comment.
+
+// A label is specified as
+// lab <name>
+// and jump instructions are expected to be
+// j** <name>
+// After parsing is done, however, lab <name> will not count
+// as an instruction at all, but will associate the instruction
+// count <n> of the next instruction with it's name and any j**
+// instruction with <name> will be substituted by j** <n>.
+
+// Jumps to labels that preceed no instruction or preceed the
+// first instruction is currently undefined behavior to make my
+// life easier and they're unecessary.
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func parser(f *os.File) (code [maxCodeSize]float64) {
+	reader := bufio.NewReader(f)
+
+	labels := make(map[string]int)
+	labelsPending := make(map[int]string)
+
+	lineNumber := 0
+	count := 0
+
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				panic(err)
+			}
+		}
+		lineNumber += 1
+
+		instructions := strings.Fields(line)
+
+		if len(instructions) == 0 {
+			continue
+		}
+
+		switch instructions[0] {
+		case "lab":
+			labels[instructions[1]] = count
+		case "jmp":
+			code[count] = jmp
+			if labels[instructions[1]] != 0 {
+				code[count+1] = float64(labels[instructions[1]])
+			} else {
+				labelsPending[count+1] = instructions[1]
+			}
+			count += 2
+
+		case "cmp":
+			code[count] = cmp
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "jlt":
+			code[count] = jlt
+			if labels[instructions[1]] != 0 {
+				code[count+1] = float64(labels[instructions[1]])
+			} else {
+				labelsPending[count+1] = instructions[1]
+			}
+			count += 2
+		case "jeq":
+			code[count] = jeq
+			if labels[instructions[1]] != 0 {
+				code[count+1] = float64(labels[instructions[1]])
+			} else {
+				labelsPending[count+1] = instructions[1]
+			}
+			count += 2
+		case "jgt":
+			code[count] = jgt
+			if labels[instructions[1]] != 0 {
+				code[count+1] = float64(labels[instructions[1]])
+			} else {
+				labelsPending[count+1] = instructions[1]
+			}
+			count += 2
+
+		case "val":
+			code[count] = val
+			code[count+1] = getLiteral(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "cpy":
+			code[count] = cpy
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "add":
+			code[count] = add
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "sub":
+			code[count] = sub
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "mul":
+			code[count] = mul
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "shw":
+			code[count] = shw
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "get":
+			code[count] = get
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "nop":
+			code[count] = nop
+			count += 1
+		case "hlt":
+			code[count] = hlt
+			count += 1
+		case "flr":
+			code[count] = flr
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "cel":
+			code[count] = cel
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "inc":
+			code[count] = inc
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "dec":
+			code[count] = dec
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		default:
+			exit(fmt.Sprintf("invalid '%s' at line %d", instructions[0], lineNumber))
+		}
+	}
+
+	for index, label := range labelsPending {
+		code[index] = float64(labels[label])
+	}
+
+	return
+}
+
+func getLiteral(ins string) float64 {
+	lit, err := strconv.ParseFloat(ins, 64)
+	if err != nil {
+		panic(err)
+	}
+	return lit
+}
+
+func getRegister(ins string) float64 {
+	tins := ins[1:len(ins)]
+	reg, err := strconv.ParseFloat(tins, 64)
+	if err != nil {
+		exit(fmt.Sprintf("%s is an invalid register", ins))
+	}
+	return float64(reg)
+}

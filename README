@@ -150,7 +150,7 @@ str	<name>	...
 Basically sets <name> to represent the index a string made of every word after
 it's name but separated by a space.
 I don't know what happens if there's nothing but whitespace after <name>, since
-I have not implemented this yet.
+I have not implemented this yet. PS: It's just newline.
 To display a string, you use
 
 dsp	<name>

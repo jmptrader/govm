@@ -11,7 +11,7 @@ func exit(msg string) {
 }
 
 const (
-	maxCodeSize = 64
+	maxCodeSize = 128
 	regCount    = 16
 	dataSize    = 32
 )

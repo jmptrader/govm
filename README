@@ -1,0 +1,169 @@
+GoVM
+----
+
+
+
+	1. VM Instructions
+
+
+
+1.1 Dictionary
+
+
+reg - Register
+lit - Literal
+add - Code address
+dat - Data address
+
+Note that except for hlt being represented by 0.0, no other instruction
+has its value specified. It would actually make more sense for 0.0 to be
+fixed as nop, but hey ¯\_(ツ)_/¯
+Also, `a` refers to the value of the first argument and `b` refers to the
+value of the second argument, whenever applicable.
+
+
+
+1.2 Instructions
+
+
+hlt
+	Halts program execution
+nop
+	Does nothing.
+
+val	[lit]	[reg]
+	Sets b to be equal to a.
+cpy	[reg]	[reg]
+	Sets b to be equal to a.
+
+add	[reg]	[reg]
+	Adds a to b.
+sub	[reg]	[reg]
+	Subtracts a from b.
+mul	[reg]	[reg]
+	Multiplies a to b.
+div	[reg]	[reg]
+	Divides b by a.
+
+inc	[reg]
+	Increases a by 1.
+dec	[reg]
+	Decreases a by 1.
+flr	[reg]
+	Changes a to the highest integer value lower or equal than a.
+cel	[reg]
+	Changes a to the lowest integer value higher or equal than a.
+
+shw	[reg]
+	Prints the a to the standard output.
+get	[reg]
+	Sets a to whatever is entered into the standard input (if valid).
+dsp	[dat]
+	Prints the a-th string to the standard output.
+
+cmp	[reg]	[reg]
+	If a is less than b, flt is set to true. If a equals b, feq is set
+	to true. Otherwise, fgt is set to true. When a flag is set to true
+	the other flags are set to false.
+
+jmp	[add]
+	Jumps to the a-th instruction.
+jgt	[add]
+	Jumps to the a-th instruction if the fgt flag is set to true.
+jeq	[add]
+	Jumps to the a-th instruction if the feq flag is set to true.
+jlt	[add]
+	Jumps to the a-th instruction if the flt flag is set to true.
+
+
+
+	2. Syntax
+
+
+
+2.1 Registers
+
+
+All registers are written as %n where n is an *integer* referring to the
+n-th register.
+
+
+
+2.2 Comments
+
+
+Any text after an instruction and its arguments is a valid comment.
+Please mind that str pseudo-instructions consume everything so don't
+comment on those lines.
+
+Examples:
+
+nop Hey jude.
+add %0	%1 Don't say goodbye.
+
+
+
+2.3 Jump statements
+
+
+Jump statements have special syntax so that people don't have to manually
+count the number of instructions. For this purpose a pseudo-instruction is
+introduced.
+
+Labels are defined by
+
+lab <labelname>
+
+and jump statements are written as
+
+j** <labelname>
+
+and what they do is fairly intuitive.
+
+Multiple labels of the same name are sort of defined behavior.
+The parsing associated the label to it's actual value as soon as
+the `lab` pseudo-instruction is found. If a new `lab` with the
+same labelname were to be found, it's value would be overwritten.
+Now, when a j** instruction is reached, if labelname was already
+read, than it's immediately substituted by its actual value. In
+case it has not, than only after parsing the entire file it will
+receive the value, meaning the last `lab` statement with labelname
+will hold valid.
+Changing the parser to make multiple label statements would be simple
+so it might do that in the future or just set the actual values for
+labelnames in the end of parsing consistently. But hey ¯\_(ツ)_/¯
+This might lead to some fun code that makes use of this stuff. This is
+after all a fun project so that I practice some of this kind of thing.
+
+Also, jumps to labels that preceed no instruction or preceed the first
+instruction is currently undefined behavior to make my life easier and
+they're unecessary.
+
+
+
+2.4 Constant strings
+
+String syntax also has special pseudo-instructions. 
+
+str	<name>	...
+
+Basically sets <name> to represent the index a string made of every word after
+it's name but separated by a space.
+I don't know what happens if there's nothing but whitespace after <name>, since
+I have not implemented this yet.
+To display a string, you use
+
+dsp	<name>
+
+so that you don't have to know by heart all of the string indexes.
+The <name> used in a dsp instruction has to be already declared by a str.
+If you don't it will be actually set as 0, so as long as you defined at
+least one string, the first one will be defaulted to.
+
+
+	3. Other notes
+
+
+Maximum code size is set by the maxCodeSize constant in main.go.
+Number of registers is set by the regCount constant in main.go.
+

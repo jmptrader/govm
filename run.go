@@ -28,6 +28,10 @@ func run(code [maxCodeSize]float64) {
 		// fmt.Println(b2s[code[count]])
 
 		switch code[count] {
+		case dsp:
+			fmt.Println(data[int(code[count+1])])
+			count += 2
+
 		case jmp:
 			count = int(code[count+1])
 
@@ -81,6 +85,9 @@ func run(code [maxCodeSize]float64) {
 		case mul:
 			reg[int(code[count+2])] *= reg[int(code[count+1])]
 			count += 3
+		case div:
+			reg[int(code[count+2])] /= reg[int(code[count+1])]
+			count += 3
 		case shw:
 			fmt.Println(reg[int(code[count+1])])
 			count += 2
@@ -114,7 +121,7 @@ func run(code [maxCodeSize]float64) {
 			reg[int(code[count+1])] -= 1
 			count += 2
 		default:
-			panic("Unexpected instruction code.")
+			panic(fmt.Sprintf("Unexpected instruction code. %.0f\n", code[count]))
 		}
 	}
 }

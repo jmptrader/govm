@@ -1,23 +1,5 @@
 package main
 
-// Besides instructions additional syntax is involved in
-// labels and jumping.
-// Also anything after an instruction and its arguments
-// is a valid comment.
-
-// A label is specified as
-// lab <name>
-// and jump instructions are expected to be
-// j** <name>
-// After parsing is done, however, lab <name> will not count
-// as an instruction at all, but will associate the instruction
-// count <n> of the next instruction with it's name and any j**
-// instruction with <name> will be substituted by j** <n>.
-
-// Jumps to labels that preceed no instruction or preceed the
-// first instruction is currently undefined behavior to make my
-// life easier and they're unecessary.
-
 import (
 	"bufio"
 	"fmt"
@@ -27,6 +9,8 @@ import (
 	"strings"
 )
 
+var data [dataSize]string
+
 func parser(f *os.File) (code [maxCodeSize]float64) {
 	reader := bufio.NewReader(f)
 
@@ -35,6 +19,9 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 
 	lineNumber := 0
 	count := 0
+
+	dataMap := make(map[string]int)
+	dataCurr := 0
 
 	for {
 		line, err := reader.ReadString('\n')
@@ -56,6 +43,16 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		switch instructions[0] {
 		case "lab":
 			labels[instructions[1]] = count
+
+		case "str":
+			data[dataCurr] = strings.Join(instructions[2:len(instructions)], " ")
+			dataMap[instructions[1]] = dataCurr
+			dataCurr += 1
+		case "dsp":
+			code[count] = dsp
+			code[count+1] = float64(dataMap[instructions[1]])
+			count += 2
+
 		case "jmp":
 			code[count] = jmp
 			if labels[instructions[1]] != 0 {
@@ -117,6 +114,11 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			count += 3
 		case "mul":
 			code[count] = mul
+			code[count+1] = getRegister(instructions[1])
+			code[count+2] = getRegister(instructions[2])
+			count += 3
+		case "div":
+			code[count] = div
 			code[count+1] = getRegister(instructions[1])
 			code[count+2] = getRegister(instructions[2])
 			count += 3

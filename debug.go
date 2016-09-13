@@ -11,7 +11,9 @@ var b2s = map[float64]string{
 	add: "add",
 	sub: "sub",
 	mul: "mul",
+	div: "div",
 	shw: "shw",
+	dsp: "dsp",
 	get: "get",
 	nop: "nop",
 	flr: "flr",
@@ -83,9 +85,18 @@ func decode(code [maxCodeSize]float64) (ds [maxCodeSize]string) {
 			ds[count+1] = fmt.Sprintf("%%%f", code[count+1])
 			ds[count+2] = fmt.Sprintf("%%%f\n", code[count+2])
 			count += 3
+		case div:
+			ds[count] = "div"
+			ds[count+1] = fmt.Sprintf("%%%f", code[count+1])
+			ds[count+2] = fmt.Sprintf("%%%f\n", code[count+2])
+			count += 3
 		case shw:
 			ds[count] = "shw"
 			ds[count+1] = fmt.Sprintf("%%%f\n", code[count+1])
+			count += 2
+		case dsp:
+			ds[count] = "dsp"
+			ds[count+1] = fmt.Sprintf("%.0f\n", code[count+1])
 			count += 2
 		case get:
 			ds[count] = "get"

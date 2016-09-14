@@ -18,6 +18,8 @@ func run(code [maxCodeSize]float64) {
 	fgt := false
 
 	var reg [regCount]float64
+	var stack [stackSize]float64
+	sp := 0
 
 	for {
 		if count >= maxCodeSize {
@@ -51,6 +53,22 @@ func run(code [maxCodeSize]float64) {
 			}
 			count += 3
 
+		case cmz:
+			if reg[int(code[count+1])] < 0 {
+				flt = true
+				feq = false
+				fgt = false
+			} else if reg[int(code[count+1])] == 0 {
+				flt = false
+				feq = true
+				fgt = false
+			} else {
+				flt = false
+				feq = false
+				fgt = true
+			}
+			count += 2
+
 		case jlt:
 			if flt {
 				count = int(code[count+1])
@@ -76,6 +94,14 @@ func run(code [maxCodeSize]float64) {
 		case cpy:
 			reg[int(code[count+2])] = reg[int(code[count+1])]
 			count += 3
+		case psh:
+			stack[sp] = reg[int(code[count+1])]
+			sp += 1
+			count += 2
+		case pop:
+			sp -= 1
+			reg[int(code[count+1])] = stack[sp]
+			count += 2
 		case add:
 			reg[int(code[count+2])] += reg[int(code[count+1])]
 			count += 3

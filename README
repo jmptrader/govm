@@ -16,8 +16,7 @@ add - Code address
 dat - Data address
 
 Note that except for hlt being represented by 0.0, no other instruction
-has its value specified. It would actually make more sense for 0.0 to be
-fixed as nop, but hey ¯\_(ツ)_/¯
+has its value specified.
 Also, `a` refers to the value of the first argument and `b` refers to the
 value of the second argument, whenever applicable.
 
@@ -35,6 +34,10 @@ val	[lit]	[reg]
 	Sets b to be equal to a.
 cpy	[reg]	[reg]
 	Sets b to be equal to a.
+psh	[reg]
+	Pushes a to the top of the stack.
+pop	[reg]
+	Pops the top of the stack into a.
 
 add	[reg]	[reg]
 	Adds a to b.
@@ -65,6 +68,9 @@ cmp	[reg]	[reg]
 	If a is less than b, flt is set to true. If a equals b, feq is set
 	to true. Otherwise, fgt is set to true. When a flag is set to true
 	the other flags are set to false.
+cmz	[reg]
+	Same behavior as cmp assuming there is a second argument where b
+	equals zero.
 
 jmp	[add]
 	Jumps to the a-th instruction.
@@ -167,3 +173,6 @@ least one string, the first one will be defaulted to.
 Maximum code size is set by the maxCodeSize constant in main.go.
 Number of registers is set by the regCount constant in main.go.
 
+	4. Todo
+
+Add function pseudo-instructions.

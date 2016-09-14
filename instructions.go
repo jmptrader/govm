@@ -5,6 +5,8 @@ const (
 
 	val
 	cpy
+	psh
+	pop
 
 	add
 	sub
@@ -23,6 +25,8 @@ const (
 	jmp
 
 	cmp
+	cmz
+
 	jlt
 	jeq
 	jgt

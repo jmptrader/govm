@@ -14,6 +14,7 @@ const (
 	maxCodeSize = 128
 	regCount    = 16
 	dataSize    = 32
+	stackSize   = 128
 )
 
 func main() {

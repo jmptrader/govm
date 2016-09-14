@@ -67,6 +67,11 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			code[count+1] = getRegister(instructions[1])
 			code[count+2] = getRegister(instructions[2])
 			count += 3
+		case "cmz":
+			code[count] = cmz
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+
 		case "jlt":
 			code[count] = jlt
 			if labels[instructions[1]] != 0 {
@@ -102,6 +107,15 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			code[count+1] = getRegister(instructions[1])
 			code[count+2] = getRegister(instructions[2])
 			count += 3
+		case "psh":
+			code[count] = psh
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+		case "pop":
+			code[count] = pop
+			code[count+1] = getRegister(instructions[1])
+			count += 2
+
 		case "add":
 			code[count] = add
 			code[count+1] = getRegister(instructions[1])

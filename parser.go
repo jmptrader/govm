@@ -43,6 +43,16 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		switch instructions[0] {
 		case "lab":
 			labels[instructions[1]] = count
+		case "def":
+			labels[instructions[1]] = count
+
+		case "cll":
+			code[count] = cll
+			labelsPending[count+1] = instructions[1]
+			count += 2
+		case "ret":
+			code[count] = ret
+			count += 1
 
 		case "str":
 			data[dataCurr] = strings.Join(instructions[2:len(instructions)], " ")

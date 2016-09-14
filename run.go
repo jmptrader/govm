@@ -18,6 +18,10 @@ func run(code [maxCodeSize]float64) {
 	fgt := false
 
 	var reg [regCount]float64
+
+	var callStack [callStackSize]int
+	csp := 0
+
 	var stack [stackSize]float64
 	sp := 0
 
@@ -30,6 +34,15 @@ func run(code [maxCodeSize]float64) {
 		// fmt.Println(b2s[code[count]])
 
 		switch code[count] {
+		case cll:
+			callStack[csp] = count + 2
+			csp += 1
+			count = int(code[count+1])
+
+		case ret:
+			csp -= 1
+			count = callStack[csp]
+
 		case dsp:
 			fmt.Println(data[int(code[count+1])])
 			count += 2

@@ -3,6 +3,9 @@ package main
 const (
 	hlt = iota
 
+	ret
+	cll
+
 	val
 	cpy
 	psh

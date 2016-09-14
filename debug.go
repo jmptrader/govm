@@ -37,6 +37,14 @@ func decode(code [maxCodeSize]float64) (ds [maxCodeSize]string) {
 		}
 
 		switch code[count] {
+		case cll:
+			ds[count] = "cll"
+			ds[count+1] = fmt.Sprintf("%.0f\n", code[count+1])
+			count += 2
+		case ret:
+			ds[count] = "ret"
+			count += 1
+
 		case cmp:
 			ds[count] = "cmp"
 			ds[count+1] = fmt.Sprintf("%%%f", code[count+1])

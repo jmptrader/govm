@@ -81,7 +81,12 @@ jeq	[add]
 jlt	[add]
 	Jumps to the a-th instruction if the flt flag is set to true.
 
-
+cll	[add]
+	Jumps to the a-th instruction and saves current instruction index
+	plus two (the next instruction) into the call stack.
+ret
+	Let n be the topmost value in the call stack. Jumps to the n-th
+	instruction and pops the call stack.
 
 	2. Syntax
 
@@ -166,6 +171,21 @@ The <name> used in a dsp instruction has to be already declared by a str.
 If you don't it will be actually set as 0, so as long as you defined at
 least one string, the first one will be defaulted to.
 
+2.5 Function calls
+
+A function name is defined as def, which really does nothing* besides act just
+like lab. In the future it may do some special stuff/add special behavior.
+*Actually the difference between def and lab is that def is always resolved after
+parsing the entire file since that's what I'll recommend in the third paragraph
+of this subsection.
+
+The two new instructions are cll and ret, which make use of the call stack to
+know where to return.
+
+Here's the gist. Function bodies are just parsed as normal instructions, so if
+a the body of the function gets reached it will be executed normally except the
+ret statement will make things go bad. So write them after everything else and
+make sure the program halts before reaching that.
 
 	3. Other notes
 

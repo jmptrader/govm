@@ -11,10 +11,11 @@ func exit(msg string) {
 }
 
 const (
-	maxCodeSize = 128
-	regCount    = 16
-	dataSize    = 32
-	stackSize   = 128
+	maxCodeSize   = 256
+	regCount      = 16
+	dataSize      = 64
+	stackSize     = 256
+	callStackSize = 64
 )
 
 func main() {

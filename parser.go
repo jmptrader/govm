@@ -45,13 +45,33 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		}
 
 		switch ins[0] {
+		// Pseudo-instructions
+
+		case "str":
+			data[dataCurr] = strings.Join(ins[2:len(ins)], " ")
+			dataMap[ins[1]] = dataCurr
+			dataCurr += 1
+
 		case "lab":
 			if labels[ins[1]] != 0 {
 				compilerError("label redefinition", ins[1], lineNumber)
 			}
 			labels[ins[1]] = count
+
 		case "def":
+			if labels[ins[1]] != 0 {
+				compilerError("label redefinition", ins[1], lineNumber)
+			}
 			labels[ins[1]] = count
+
+		// Instructions
+
+		case "hlt":
+			code[count] = hlt
+			count += 1
+		case "nop":
+			code[count] = nop
+			count += 1
 
 		case "cll":
 			code[count] = cll
@@ -60,42 +80,6 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		case "ret":
 			code[count] = ret
 			count += 1
-
-		case "str":
-			data[dataCurr] = strings.Join(ins[2:len(ins)], " ")
-			dataMap[ins[1]] = dataCurr
-			dataCurr += 1
-		case "dsp":
-			code[count] = dsp
-			code[count+1] = float64(dataMap[ins[1]])
-			count += 2
-
-		case "jmp":
-			code[count] = jmp
-			labelsPending[count+1] = ins[1]
-			count += 2
-		case "jlt":
-			code[count] = jlt
-			labelsPending[count+1] = ins[1]
-			count += 2
-		case "jeq":
-			code[count] = jeq
-			labelsPending[count+1] = ins[1]
-			count += 2
-		case "jgt":
-			code[count] = jgt
-			labelsPending[count+1] = ins[1]
-			count += 2
-
-		case "cmp":
-			code[count] = cmp
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
-			count += 3
-		case "cmz":
-			code[count] = cmz
-			code[count+1] = getRegister(ins[1])
-			count += 2
 
 		case "val":
 			code[count] = val
@@ -136,28 +120,6 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			code[count+1] = getRegister(ins[1])
 			code[count+2] = getRegister(ins[2])
 			count += 3
-		case "shw":
-			code[count] = shw
-			code[count+1] = getRegister(ins[1])
-			count += 2
-		case "get":
-			code[count] = get
-			code[count+1] = getRegister(ins[1])
-			count += 2
-		case "nop":
-			code[count] = nop
-			count += 1
-		case "hlt":
-			code[count] = hlt
-			count += 1
-		case "flr":
-			code[count] = flr
-			code[count+1] = getRegister(ins[1])
-			count += 2
-		case "cel":
-			code[count] = cel
-			code[count+1] = getRegister(ins[1])
-			count += 2
 		case "inc":
 			code[count] = inc
 			code[count+1] = getRegister(ins[1])
@@ -166,6 +128,56 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			code[count] = dec
 			code[count+1] = getRegister(ins[1])
 			count += 2
+
+		case "flr":
+			code[count] = flr
+			code[count+1] = getRegister(ins[1])
+			count += 2
+		case "cel":
+			code[count] = cel
+			code[count+1] = getRegister(ins[1])
+			count += 2
+
+		case "jmp":
+			code[count] = jmp
+			labelsPending[count+1] = ins[1]
+			count += 2
+		case "jlt":
+			code[count] = jlt
+			labelsPending[count+1] = ins[1]
+			count += 2
+		case "jeq":
+			code[count] = jeq
+			labelsPending[count+1] = ins[1]
+			count += 2
+		case "jgt":
+			code[count] = jgt
+			labelsPending[count+1] = ins[1]
+			count += 2
+
+		case "cmp":
+			code[count] = cmp
+			code[count+1] = getRegister(ins[1])
+			code[count+2] = getRegister(ins[2])
+			count += 3
+		case "cmz":
+			code[count] = cmz
+			code[count+1] = getRegister(ins[1])
+			count += 2
+
+		case "shw":
+			code[count] = shw
+			code[count+1] = getRegister(ins[1])
+			count += 2
+		case "get":
+			code[count] = get
+			code[count+1] = getRegister(ins[1])
+			count += 2
+		case "dsp":
+			code[count] = dsp
+			code[count+1] = float64(dataMap[ins[1]])
+			count += 2
+
 		default:
 			compilerError("invalid instruction", ins[0], lineNumber)
 		}

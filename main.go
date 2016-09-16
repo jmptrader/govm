@@ -6,7 +6,7 @@ import (
 )
 
 func exit(msg string) {
-	fmt.Printf("govm: %s\n", msg)
+	fmt.Printf("\033[1m\033[31mgovm\033[39m\033[0m: %s\n", msg)
 	os.Exit(1)
 }
 
@@ -41,7 +41,7 @@ func main() {
 	file.Close()
 
 	// Debug
-	fmt.Println(decode(code))
+	// fmt.Println(decode(code))
 
 	run(code)
 }

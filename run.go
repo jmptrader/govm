@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+func runtimeError(msg string, code, index float64) {
+	exit(fmt.Sprintf("runtime: %s [%0.f @ %0.f]", msg, code, index))
+}
+
 func run(code [maxCodeSize]float64) {
 	count := 0
 	reader := bufio.NewReader(os.Stdin)
@@ -161,7 +165,7 @@ func run(code [maxCodeSize]float64) {
 			count += 2
 
 		default:
-			panic(fmt.Sprintf("Unexpected instruction code. %.0f\n", code[count]))
+			runtimeError("invalid instruction", code[count], float64(count))
 		}
 	}
 }

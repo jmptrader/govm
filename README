@@ -131,9 +131,7 @@ j** <labelname>
 
 and what they do is fairly intuitive.
 
-The <labelname> value is only evaluated after reading the entire file. As it
-stands, in case of label refefinition, the one on the higher line count is the
-one that will prevail over the entire file.
+Label redefinition is a compilation error.
 
 Also, jumps to labels that preceed no instruction or preceed the first
 instruction is currently undefined behavior to make my life easier and

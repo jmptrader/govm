@@ -3,11 +3,11 @@
 PC001:
   Change label evaluation to only occur after all parsing instead of evaluating
   immediately in case the specific label has already been parsed.
+PC002:
+  Make label redefinition into a parsing/compiler error.
 
 	2. Proposed
 
-PC002:
-  Make label redefinition into a parsing/compiler error.
 PC003:
   Change cpy to mov. mov makes more sense traditionally for this specific function
   and I want cpy freed for something in the future regarding memory access since
@@ -69,3 +69,5 @@ PC012:
   sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
   lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
   cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
+PC013:
+  Make it so the nop instruction actually compiles into nothing.

@@ -58,12 +58,6 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			}
 			labels[ins[1]] = count
 
-		case "def":
-			if labels[ins[1]] != 0 {
-				compilerError("label redefinition", ins[1], lineNumber)
-			}
-			labels[ins[1]] = count
-
 		// Instructions
 
 		case "hlt":

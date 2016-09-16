@@ -31,7 +31,7 @@ div	%6	%5	mean := mean / n
 jmp	mainLoop
 hlt
 
-def	clearScreen
+lab	clearScreen
 val	40	%0
 lab	clearScreenLoop
 dsp	newline

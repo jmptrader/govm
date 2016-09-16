@@ -9,6 +9,10 @@ PC003:  2016-09-16
   Change cpy to mov. mov makes more sense traditionally for this specific function
   and I want cpy freed for something in the future regarding memory access since
   it feels more appropriate for that.
+PC005:  2016-09-16
+  Since PC004 solves the possible problem of needing to separate regular 'jumping'
+  labels from function labels, the def instruction will be deprecated in favor of
+  just lab.
 
 	2. Proposed
 
@@ -17,10 +21,6 @@ PC004:
   quent file acts as if appended to the first one. This allows for continuation of
   execution through files, but it's intended to allow for function labels defined
   in other files to be easily accessible with the current design.
-PC005:
-  Since PC004 solves the possible problem of needing to separate regular 'jumping'
-  labels from function labels, the def instruction will be deprecated in favor of
-  just lab.
 PC006:
   Deprecate lab label definition in favor of the "<name>:" syntax. In the switch
   for the first word in the line, the default case should be changed to check if

@@ -60,7 +60,7 @@ dsp	newline
 
 hlt
 
-def	countdownAndPrint
+lab	countdownAndPrint
 pop	%0
 lab	capLoop
 shw	%0

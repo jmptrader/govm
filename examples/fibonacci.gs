@@ -18,7 +18,7 @@ hlt
 
 
 
-def	fib
+lab	fib
 pop	%0
 
 cmz	%0

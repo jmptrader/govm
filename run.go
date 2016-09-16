@@ -54,7 +54,7 @@ func run(code [maxCodeSize]float64) {
 		case val:
 			reg[int(code[count+2])] = code[count+1]
 			count += 3
-		case cpy:
+		case mov:
 			reg[int(code[count+2])] = reg[int(code[count+1])]
 			count += 3
 		case psh:

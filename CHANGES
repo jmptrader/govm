@@ -1,17 +1,17 @@
 	1. Implemented
 
-PC001:
+PC001:  2016-09-16
   Change label evaluation to only occur after all parsing instead of evaluating
   immediately in case the specific label has already been parsed.
-PC002:
+PC002:  2016-09-16
   Make label redefinition into a parsing/compiler error.
-
-	2. Proposed
-
-PC003:
+PC003:  2016-09-16
   Change cpy to mov. mov makes more sense traditionally for this specific function
   and I want cpy freed for something in the future regarding memory access since
   it feels more appropriate for that.
+
+	2. Proposed
+
 PC004:
   Allow multiple files. The first file is where execution begins, and each subse-
   quent file acts as if appended to the first one. This allows for continuation of

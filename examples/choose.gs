@@ -35,7 +35,7 @@ jgt	zero
 jeq	one
 
 nop	Calculate x-y into %3
-cpy	%1	%3
+mov	%1	%3
 sub	%2	%3
 
 val	1	%4
@@ -44,9 +44,9 @@ nop	Check if x-y > y, if so then swap %3 with %2
 cmp	%2	%3
 jlt	main
 
-cpy	%2	%7
-cpy	%3	%2
-cpy	%7	%3
+mov	%2	%7
+mov	%3	%2
+mov	%7	%3
 
 lab	main
 

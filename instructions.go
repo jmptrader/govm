@@ -8,7 +8,7 @@ const (
 	ret
 
 	val
-	cpy
+	mov
 	psh
 	pop
 

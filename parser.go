@@ -86,8 +86,8 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 			code[count+1] = getLiteral(ins[1])
 			code[count+2] = getRegister(ins[2])
 			count += 3
-		case "cpy":
-			code[count] = cpy
+		case "mov":
+			code[count] = mov
 			code[count+1] = getRegister(ins[1])
 			code[count+2] = getRegister(ins[2])
 			count += 3

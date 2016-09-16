@@ -24,7 +24,7 @@ func main() {
 	}
 
 	if os.Args[1] == "--version" {
-		fmt.Println("GoVM d0.0")
+		fmt.Println("GoVM 0.1")
 		os.Exit(0)
 	}
 

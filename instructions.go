@@ -2,9 +2,10 @@ package main
 
 const (
 	hlt = iota
+	nop
 
-	ret
 	cll
+	ret
 
 	val
 	cpy
@@ -15,24 +16,21 @@ const (
 	sub
 	mul
 	div
-
-	shw
-	get
-	nop
-
-	flr
-	cel
 	inc
 	dec
 
+	flr
+	cel
+
 	jmp
-
-	cmp
-	cmz
-
 	jlt
 	jeq
 	jgt
 
+	cmp
+	cmz
+
+	shw
+	get
 	dsp
 )

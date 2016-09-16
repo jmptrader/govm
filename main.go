@@ -41,7 +41,7 @@ func main() {
 	file.Close()
 
 	// Debug
-	// fmt.Println(decode(code))
+	fmt.Println(decode(code))
 
 	run(code)
 }

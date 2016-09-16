@@ -131,26 +131,13 @@ j** <labelname>
 
 and what they do is fairly intuitive.
 
-Multiple labels of the same name are sort of defined behavior.
-The parsing associated the label to it's actual value as soon as
-the `lab` pseudo-instruction is found. If a new `lab` with the
-same labelname were to be found, it's value would be overwritten.
-Now, when a j** instruction is reached, if labelname was already
-read, than it's immediately substituted by its actual value. In
-case it has not, than only after parsing the entire file it will
-receive the value, meaning the last `lab` statement with labelname
-will hold valid.
-Changing the parser to make multiple label statements would be simple
-so it might do that in the future or just set the actual values for
-labelnames in the end of parsing consistently. But hey ¯\_(ツ)_/¯
-This might lead to some fun code that makes use of this stuff. This is
-after all a fun project so that I practice some of this kind of thing.
+The <labelname> value is only evaluated after reading the entire file. As it
+stands, in case of label refefinition, the one on the higher line count is the
+one that will prevail over the entire file.
 
 Also, jumps to labels that preceed no instruction or preceed the first
 instruction is currently undefined behavior to make my life easier and
 they're unecessary.
-
-
 
 2.4 Constant strings
 
@@ -187,12 +174,3 @@ a the body of the function gets reached it will be executed normally except the
 ret statement will make things go bad. So write them after everything else and
 make sure the program halts before reaching that.
 
-	3. Other notes
-
-
-Maximum code size is set by the maxCodeSize constant in main.go.
-Number of registers is set by the regCount constant in main.go.
-
-	4. Todo
-
-Add function pseudo-instructions.

@@ -65,11 +65,19 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 
 		case "jmp":
 			code[count] = jmp
-			if labels[instructions[1]] != 0 {
-				code[count+1] = float64(labels[instructions[1]])
-			} else {
-				labelsPending[count+1] = instructions[1]
-			}
+			labelsPending[count+1] = instructions[1]
+			count += 2
+		case "jlt":
+			code[count] = jlt
+			labelsPending[count+1] = instructions[1]
+			count += 2
+		case "jeq":
+			code[count] = jeq
+			labelsPending[count+1] = instructions[1]
+			count += 2
+		case "jgt":
+			code[count] = jgt
+			labelsPending[count+1] = instructions[1]
 			count += 2
 
 		case "cmp":
@@ -80,31 +88,6 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		case "cmz":
 			code[count] = cmz
 			code[count+1] = getRegister(instructions[1])
-			count += 2
-
-		case "jlt":
-			code[count] = jlt
-			if labels[instructions[1]] != 0 {
-				code[count+1] = float64(labels[instructions[1]])
-			} else {
-				labelsPending[count+1] = instructions[1]
-			}
-			count += 2
-		case "jeq":
-			code[count] = jeq
-			if labels[instructions[1]] != 0 {
-				code[count+1] = float64(labels[instructions[1]])
-			} else {
-				labelsPending[count+1] = instructions[1]
-			}
-			count += 2
-		case "jgt":
-			code[count] = jgt
-			if labels[instructions[1]] != 0 {
-				code[count+1] = float64(labels[instructions[1]])
-			} else {
-				labelsPending[count+1] = instructions[1]
-			}
 			count += 2
 
 		case "val":

@@ -1,0 +1,71 @@
+	1. Implemented
+
+PC001:
+  Change label evaluation to only occur after all parsing instead of evaluating
+  immediately in case the specific label has already been parsed.
+
+	2. Proposed
+
+PC002:
+  Make label redefinition into a parsing/compiler error.
+PC003:
+  Change cpy to mov. mov makes more sense traditionally for this specific function
+  and I want cpy freed for something in the future regarding memory access since
+  it feels more appropriate for that.
+PC004:
+  Allow multiple files. The first file is where execution begins, and each subse-
+  quent file acts as if appended to the first one. This allows for continuation of
+  execution through files, but it's intended to allow for function labels defined
+  in other files to be easily accessible with the current design.
+PC005:
+  Since PC004 solves the possible problem of needing to separate regular 'jumping'
+  labels from function labels, the def instruction will be deprecated in favor of
+  just lab.
+PC006:
+  Deprecate lab label definition in favor of the "<name>:" syntax. In the switch
+  for the first word in the line, the default case should be changed to check if
+  the last byte of the word equals ':', if so, do the same thing "lab" does except
+  instead of a second word, use every byte but the last one of the first word.
+  Note that because of how parsing works, a label cannot be immediately followed
+  by instructions. Well, it can, but they will be treated as comments.
+PC007:
+  Change parsing into compilation of a bytecode binary file.
+PC008:
+  Implement a provisionary way to access argument calls. Becaause of the current
+  instruction set should only allow double precision numbers, since for strings
+  the only possible functionality would be to echo them.
+PC009:
+  Not a language change but change the convention for function calls so that the
+  first four values passed to a function to be in the %0, %1, %2 and %3 registers
+  respectively.
+PC010:
+  Implement a set of mathematical functions as instructions.
+  abs	reg		Absolute value
+  sqr	reg		Square root
+  sin	reg		Sine
+  cos	reg		Cosine
+  tan	reg		Tangent
+  exp	reg		Exponential
+  log	reg		Natural logarithm
+  gam	reg		Gamma
+  pow	reg	reg	Sets b to the value of b^a
+  pwa	reg	reg	Sets b to the value of a^b
+  These should be implemented as basic function calls to the math stdlib module.
+PC011:
+  Having stack frame manipulation in mind the instructions adl and sul should be
+  added. They do the same thing as add and sub, except the first argument is a li-
+  teral.
+PC012:
+  Implements general memory access.
+  Add two new registers intented for "stack frame", although the stack from psh
+  and pop will be isolated from this one, denoted by %b for base and %c for the
+  current top value.
+  Implement four instructions for access of local stack frame memory.
+  lsv	reg	lit	Saves value of reg into mem[%c-lit]
+  lld	lit	reg	Loads value of mem[%c-lit] into reg
+  lcp	lit	lit	Copies value of mem[%c-lit] into mem[%c-lit]
+  gla	lit	reg	Gets the literal address of the mem[%c-lit]
+  Implement cpy instructions for literal access.
+  sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
+  lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
+  cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.

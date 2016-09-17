@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/binary"
 	"fmt"
 	"io"
 	"os"
@@ -286,4 +287,99 @@ func getRegister(ins string) float64 {
 		exit(fmt.Sprintf("%s is an invalid register", ins))
 	}
 	return float64(reg)
+}
+
+func writeFile(code []float64, fileName string) {
+	file, err := os.Create(fileName)
+	defer file.Close()
+	if err != nil {
+		compilerError("could not create binary file", fileName, "os.Create", 0)
+	}
+
+	// Header
+	var headerValue int64
+	headerValue = 10002
+	err = binary.Write(file, binary.LittleEndian, headerValue)
+	if err != nil {
+		panic(err)
+	}
+
+	// Code size
+	var codeSize int64
+	codeSize = int64(len(code))
+	err = binary.Write(file, binary.LittleEndian, codeSize)
+	if err != nil {
+		panic(err)
+	}
+
+	// Code
+	for i := 0; i < len(code); i++ {
+		err = binary.Write(file, binary.LittleEndian, code[i])
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Data size
+	var dataStackSize int64
+	dataStackSize = int64(dataCurr)
+	err = binary.Write(file, binary.LittleEndian, dataStackSize)
+	if err != nil {
+		panic(err)
+	}
+
+	// Data
+	for i := 0; i < dataCurr; i++ {
+		_, err = fmt.Fprintln(file, data[i])
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func loadFile(fileName string) (code []float64) {
+	file, err := os.Open(fileName)
+	defer file.Close()
+	if err != nil {
+		panic(err)
+	}
+
+	var headerValue int64
+	err = binary.Read(file, binary.LittleEndian, &headerValue)
+	if err != nil {
+		panic(err)
+	}
+	if headerValue != 10002 {
+		exit("invalid header for binary file")
+	}
+
+	var codeSize int64
+	err = binary.Read(file, binary.LittleEndian, &codeSize)
+	if err != nil {
+		panic(err)
+	}
+	code = make([]float64, codeSize)
+	for i := 0; i < int(codeSize); i++ {
+		err = binary.Read(file, binary.LittleEndian, &code[i])
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	var dataStackSize int64
+	err = binary.Read(file, binary.LittleEndian, &dataStackSize)
+	if err != nil {
+		panic(err)
+	}
+
+	r := bufio.NewReader(file)
+	for i := 0; i < int(dataStackSize); i++ {
+		str, err := r.ReadString('\n')
+		if err != nil {
+			panic(err)
+		}
+		data = append(data, str[:len(str)-1])
+	}
+
+	return
 }

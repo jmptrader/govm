@@ -50,6 +50,27 @@ PC010:  2016-09-16
   pow reg reg Sets b to the value of b^a
   pwa reg reg Sets b to the value of a^b
   These should be implemented as basic function calls to the math stdlib module.
+PC019:  2016-09-16
+  This PC specifies a binary format.
+  The current way things work, global values are set during parsing so that they
+  can be used by the runtime, namely the data stack. This data needs to be passed
+  to the binary file.
+  The encoding is little endian as opposed to big endian so that the files are smaller :)
+  Here's the binary format:
+  First 8 bytes: header, currently fixed to be a int64 equal to 10002.
+  Next 8 bytes: size of the code.
+  Variable size section containing all of the binary code.
+  Next 8 bytes: int64 containing the size of the data stack denoted by `n`.
+  Variable size section containing all `n` strings of the data stack, all ended
+  by a '\n' byte.
+PC018:  2016-09-16
+  This PC specifies compilation and execution steps.
+  Separate compilation and execution.
+  For compilation into a binary bytecode file do:
+  govm compile binary_name main.gs [other source files]
+  For execution run:
+  govm binary_name [arguments]
+  This depends on PC019.
 
   2. Discarded
 
@@ -93,24 +114,8 @@ PC012:
   sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
   lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
   cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
-PC018:
-  This PC specifies compilation and execution steps.
-  Separate compilation and execution.
-  For compilation into a binary bytecode file do:
-  govm compile binary_name main.gs [other source files]
-  For execution run:
-  govm binary_name [arguments]
-  This depends on PC019.
-PC019:
-  This PC specifies a binary format.
-  The current way things work, global values are set during parsing so that they
-  can be used by the runtime, namely the data stack. This data needs to be passed
-  to the binary file.
-  The encoding is little endian as opposed to big endian so that the files are smaller :)
-  Here's the binary format:
-  First 8 bytes: header, currently useless.
-  Next 8 bytes: int64 containing the size of the data stack denoted by `n`.
-  Variable size section containing all `n` strings of the data stack, all ended
-  by a '\n' byte.
-  Next 8 bytes: size of the code.
-  Variable size section containing all of the binary code.
+PC020:
+  Make it so the exit from getLiteral and getRegister in compiler.go become
+  actual compiler errors that report file name and line number.
+PC021:
+  Remove all panic calls.

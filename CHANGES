@@ -103,26 +103,56 @@ PC009:  Not an actual change
   Not a language change but change the convention for function calls so that the
   first four values passed to a function to be in the %0, %1, %2 and %3 registers
   respectively.
-PC012:  More thought out instructions
-  Implements general memory access.
-  Add two new registers intented for "stack frame", although the stack from psh
-  and pop will be isolated from this one, denoted by %b for base and %c for the
-  current top value.
-  Implement four instructions for access of local stack frame memory.
-  lsv reg lit Saves value of reg into mem[%c-lit]
-  lld lit reg Loads value of mem[%c-lit] into reg
-  lcp lit lit Copies value of mem[%c-lit] into mem[%c-lit]
-  gla lit reg Gets the literal address of the mem[%c-lit]
-  Implement cpy instructions for literal access.
-  sav reg reg Saves value of a into mem[b] where b is a litaddr.
-  lod reg reg Loads value of mem[a] into b where a is a litaddr.
-  cpy reg reg Copies the value of mem[a] to mem[b]. Both are litaddr.
 
 	3. Proposed
 
 PC011:
   Having stack frame manipulation in mind the instructions adl and sul should be
-  added. They do the same thing as add and sub, except the first argument is a li-
-  teral.
+  added in order to facilitate allocation of compile time sizes.
+  adl	lit	reg		reg := reg + lit
+  sul	lit	reg		reg := reg - lit
+PC012:
+  Implements general stack based memory access.
+  A new memory stack is implemented.
+  Two new registers '%b' and '%c' are added for the purposes of stack manipulation.
+  The register '%b' is intended for the base of the local frame.
+  The register '%c' is intended for the current top of the local frame.
+  Local frame access can be done through literals with the following instructions.
+  rls	reg	lit   	Relative Literal Save		- mem[%c-lit] := reg
+  rll	lit	reg   	Relative Literal Load		- reg := mem[%c-lit]
+  rla	lit	reg   	Relative Literal Address	- reg := &mem[%c-lit]
+  Local frame access can be done through registers with the following instructions.
+  rrs	rga	rgb		Relative Register Save		- mem[%c-rgb] := rga
+  rrl	rga	rgb		Relative Register Load		- rgb := mem[%c-rga]
+  rra	rga	rgb		Relative Register Address	- rgb := &mem[%c-rga]
+  rcp	rga	rgb		Relative CoPy				- mem[%c-rgb] := mem[%c-rga]
+  Effective memory access can be done with the following instructions.
+  sav	rga	rgb		SAVe						- mem[rgb] := rga
+  lod	rga	rgb		LOaD						- rgb := mem[rga]
+  cpy	rga	rgb		CoPY						- mem[rgb] := mem[rga]
 PC022:
   Make a proper debugging mode with support for breakpoints and step by step execution.
+  This mode will be initiated with
+  govm debug binary [command_line_arguments]
+  And it starts in a repl where:
+  You can run the file with `run`
+  You can restart the repl with `reset`
+  You can setup a breakpoint with `bp <count>`
+  You can run just one instruction with `n`
+  You can see the register %n with `r <n>`
+  You can see all registers with  `r`
+  You can see the top of the stack with 's'
+  You can see the top n values of the stack with 's <n>'
+PC025:
+  Adds an instruction for swapping.
+  swp reg reg Swaps the values of a and b
+PC026:
+  Implements heap style allocation.
+  Heap style allocation can be done with the following instructions.
+  hla	lit	rgb		- Heap Literal Allocation	- rgb := &address	(size = lit)
+  hra	rga	rgb		- Heap Register Allocation	- rgb := &address	(size = rga)
+  hdl	reg			- Heap DeLete				- free(reg)
+  Heap value access can be done with the following instructions.
+  hld	rga	rgb		- Heap LoaD					- rgb := *rga
+  hsv	rga	rgv		- Heap SaVe					- *rgb := rga
+  hcp	rga	rgv		- Heap CoPy					- *rgb := *rga

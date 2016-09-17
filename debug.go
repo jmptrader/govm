@@ -16,6 +16,9 @@ var b2s = map[float64]string{
 	psh: "psh",
 	pop: "pop",
 
+	rac: "rac",
+	rad: "rad",
+
 	add: "add",
 	sub: "sub",
 	mul: "mul",
@@ -92,6 +95,16 @@ func decode(code []float64) (ds []string) {
 			ds[count] = "pop"
 			ds[count+1] = dbgLst(dbgReg(code[count+1]))
 			count += 2
+
+		case rac:
+			ds[count] = "rac"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case rad:
+			ds[count] = "rad"
+			ds[count+1] = dbgReg(code[count+1])
+			ds[count+2] = dbgLst(dbgReg(code[count+2]))
+			count += 3
 
 		case add:
 			ds[count] = "add"

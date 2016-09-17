@@ -12,7 +12,6 @@ func exit(msg string) {
 
 const (
 	regCount      = 16
-	dataSize      = 64
 	stackSize     = 256
 	callStackSize = 64
 )
@@ -22,7 +21,7 @@ func main() {
 		exit("incorrect number of arguments")
 	}
 
-	if os.Args[1] == "--version" {
+	if os.Args[1] == "version" {
 		fmt.Println("GoVM 0.1")
 		os.Exit(0)
 	}

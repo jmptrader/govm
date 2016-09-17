@@ -66,6 +66,15 @@ PC008:
   Implement a provisionary way to access argument calls. Becaause of the current
   instruction set should only allow double precision numbers, since for strings
   the only possible functionality would be to echo them.
+  This is to be done through an instruction not as general as "arg" since that
+  should be reserved for a more general way to handle command line arguments.
+  The instructions should be `rad` which stands for "Retrieve Argument as Double"
+  where the first argument is a register holding the index of the argument and
+  the second argument is the destination register.
+  Also the general instruction `rac` which stands for "Retrieve Argument Count"
+  will be implemented such that it's first argument is the register to receive
+  the argument count.
+  This depends on PC018.
 PC011:
   Having stack frame manipulation in mind the instructions adl and sul should be
   added. They do the same thing as add and sub, except the first argument is a li-
@@ -84,3 +93,24 @@ PC012:
   sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
   lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
   cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
+PC018:
+  This PC specifies compilation and execution steps.
+  Separate compilation and execution.
+  For compilation into a binary bytecode file do:
+  govm compile binary_name main.gs [other source files]
+  For execution run:
+  govm binary_name [arguments]
+  This depends on PC019.
+PC019:
+  This PC specifies a binary format.
+  The current way things work, global values are set during parsing so that they
+  can be used by the runtime, namely the data stack. This data needs to be passed
+  to the binary file.
+  The encoding is little endian as opposed to big endian so that the files are smaller :)
+  Here's the binary format:
+  First 8 bytes: header, currently useless.
+  Next 8 bytes: int64 containing the size of the data stack denoted by `n`.
+  Variable size section containing all `n` strings of the data stack, all ended
+  by a '\n' byte.
+  Next 8 bytes: size of the code.
+  Variable size section containing all of the binary code.

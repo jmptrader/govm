@@ -25,6 +25,10 @@ value of the second argument, whenever applicable.
 1.2 Instructions
 
 
+THIS IS NOT UPDATED, SEE instructions.go FOR MISSING INSTRUCTIONS AND CHECK
+THE CHANGES FILE FOR IMPLEMENTED CHANGES WHICH ADD THE NEW INSTRUCTIONS.
+
+
 hlt
 	Halts program execution
 nop
@@ -149,4 +153,10 @@ least one string, the first one will be defaulted to.
 
 See PC004 in CHANGES for reference.
 Example of this:
-./govm examples/fibonacci/main.gs examples/fibonacci/fib.gs
+./govm compile examples/fibonacci/fib examples/fibonacci/main.gs examples/fibonacci/fib.gs
+./govm examples/fibonacci/fib 20
+
+2.6 Command Line Arguments
+
+
+See PC008 in CHANGES for reference.

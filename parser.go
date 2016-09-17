@@ -23,12 +23,17 @@ type labelInfo struct {
 var labels map[string]int
 var labelsPending map[int]labelInfo
 
+var data []string
+var dataCurr int
+var dataMap map[string]int
+
 func init() {
 	labels = make(map[string]int)
 	labelsPending = make(map[int]labelInfo)
+	data = make([]string, 0)
+	dataCurr = 0
+	dataMap = make(map[string]int)
 }
-
-var data [dataSize]string
 
 func parser(f *os.File, fileName string, start int) (code []float64, count int) {
 	code = make([]float64, 0)
@@ -37,9 +42,6 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 
 	lineNumber := 0
 	count = start
-
-	dataMap := make(map[string]int)
-	dataCurr := 0
 
 	for {
 		line, err := reader.ReadString('\n')
@@ -62,7 +64,7 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 		// Pseudo-instructions
 
 		case "str":
-			data[dataCurr] = strings.Join(ins[2:len(ins)], " ")
+			data = append(data, strings.Join(ins[2:len(ins)], " "))
 			dataMap[ins[1]] = dataCurr
 			dataCurr += 1
 
@@ -107,6 +109,16 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, pop)
 			code = append(code, getRegister(ins[1]))
 			count += 2
+
+		//case "rac":
+		//	code = append(code, rac)
+		//	code = append(code, getRegister(ins[1]))
+		//	count += 2
+		//case "rad":
+		//	code = append(code, rad)
+		//	code = append(code, getRegister(ins[1]))
+		//	code = append(code, getRegister(ins[2]))
+		//	count += 3
 
 		case "add":
 			code = append(code, add)

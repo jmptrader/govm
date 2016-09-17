@@ -12,6 +12,9 @@ const (
 	psh
 	pop
 
+	rac
+	rad
+
 	add
 	sub
 	mul

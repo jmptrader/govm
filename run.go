@@ -68,6 +68,18 @@ func run(code []float64) {
 			reg[int(code[count+1])] = stack[sp]
 			count += 2
 
+		//case rac:
+		//	reg[int(code[count+1])] = float64(len(os.Args))
+		//	count += 2
+		//case rad:
+		//	val, err := strconv.ParseFloat(os.Args[int(reg[int(code[count+1])])], 64)
+		//	if err != nil {
+		//		runtimeError("invalid number", rad, float64(count))
+		//		break
+		//	}
+		//	reg[int(code[count+2])] = val
+		//	count += 3
+
 		case add:
 			reg[int(code[count+2])] += reg[int(code[count+1])]
 			count += 3
@@ -182,12 +194,12 @@ func run(code []float64) {
 		case get:
 			txt, err := reader.ReadString('\n')
 			if err != nil {
-				fmt.Println("govm: could not read the input string")
+				runtimeError("could not read the input string", get, float64(count))
 				break
 			}
 			val, err := strconv.ParseFloat(strings.TrimSpace(txt), 64)
 			if err != nil {
-				fmt.Println("govm: invalid number")
+				runtimeError("invalid number", get, float64(count))
 				break
 			}
 			reg[int(code[count+1])] = val

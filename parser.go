@@ -9,19 +9,20 @@ import (
 	"strings"
 )
 
-func compilerError(msg, str string, line int) {
-	exit(fmt.Sprintf("compiler: %s [%s] at line %d", msg, str, line))
+func compilerError(msg, file, str string, line int) {
+	exit(fmt.Sprintf("compiler: %s [%s] at line %d in %s", msg, str, line, file))
 }
 
 // We use this so that if a compilation error occurr we know the faulty line
 type labelInfo struct {
 	name string
+	file string
 	line int
 }
 
 var data [dataSize]string
 
-func parser(f *os.File) (code []float64) {
+func parser(f *os.File, fileName string) (code []float64) {
 	code = make([]float64, 0)
 
 	reader := bufio.NewReader(f)
@@ -62,7 +63,7 @@ func parser(f *os.File) (code []float64) {
 
 		case "lab":
 			if labels[ins[1]] != 0 {
-				compilerError("label redefinition", ins[1], lineNumber)
+				compilerError("label redefinition", fileName, ins[1], lineNumber)
 			}
 			labels[ins[1]] = count
 
@@ -78,7 +79,7 @@ func parser(f *os.File) (code []float64) {
 		case "cll":
 			code = append(code, cll)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
 		case "ret":
 			code = append(code, ret)
@@ -144,22 +145,22 @@ func parser(f *os.File) (code []float64) {
 		case "jmp":
 			code = append(code, jmp)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
 		case "jlt":
 			code = append(code, jlt)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
 		case "jeq":
 			code = append(code, jeq)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
 		case "jgt":
 			code = append(code, jgt)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
 
 		case "cmp":
@@ -186,14 +187,14 @@ func parser(f *os.File) (code []float64) {
 			count += 2
 
 		default:
-			compilerError("invalid instruction", ins[0], lineNumber)
+			compilerError("invalid instruction", fileName, ins[0], lineNumber)
 		}
 	}
 
 	for index, info := range labelsPending {
 		code[index] = float64(labels[info.name])
 		if code[index] == 0 {
-			compilerError("undefined label", info.name, info.line)
+			compilerError("undefined label", info.file, info.name, info.line)
 		}
 	}
 

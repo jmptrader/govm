@@ -13,12 +13,14 @@ PC005:  2016-09-16
   Since PC004 solves the possible problem of needing to separate regular 'jumping'
   labels from function labels, the def instruction will be deprecated in favor of
   just lab.
-PC015:  2015-09-16
+PC015:  2016-09-16
   Remove any restriction on code size and make everything dynamic. I can afford to
   just append at each new instruction in the parsing step.
-PC014:  2015-09-16
+PC014:  2016-09-16
   Make it so referencing an undefined label OR a label for the 0-th address is
   a compilation error and make sure the compilation error prints the line at fault.
+PC016:  2016-09-16
+  Make it so compilation errors are file aware.
 
 	2. Proposed
 

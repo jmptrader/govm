@@ -40,16 +40,19 @@ func main() {
 		exit(fmt.Sprintf("file \"%s\" could not be opened", os.Args[1]))
 	}
 
-	code := parser(file)
+	code := parser(file, os.Args[1])
 	file.Close()
 
 	// Extra files
-	//for _, arg := range os.Args[2:] {
-	//	file, err := os.Open(arg)
-	//	if err != nil {
+	// for _, arg := range os.Args[2:] {
+	// 	file, err := os.Open(arg)
+	// 	if err != nil {
 	//		exit(fmt.Sprintf("file \"%s\" could not be opened", arg))
 	//	}
-	//}
+	//
+	//	code = append(code, parser(file)...)
+	//	file.Close()
+	// }
 
 	// Debug
 	// fmt.Println(decode(code))

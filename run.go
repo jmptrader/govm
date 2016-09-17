@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func runtimeError(msg string, code, index float64) {
@@ -58,6 +59,11 @@ func run(code []float64) {
 			count += 3
 		case mov:
 			reg[int(code[count+2])] = reg[int(code[count+1])]
+			count += 3
+		case swp:
+			tmp := reg[int(code[count+2])]
+			reg[int(code[count+2])] = reg[int(code[count+1])]
+			reg[int(code[count+1])] = tmp
 			count += 3
 		case psh:
 			stack[sp] = reg[int(code[count+1])]
@@ -224,6 +230,28 @@ func run(code []float64) {
 			count += 2
 		case dsp:
 			fmt.Println(data[int(code[count+1])])
+			count += 2
+
+		case dty:
+			reg[int(code[count+1])] = float64(time.Now().Year())
+			count += 2
+		case dtm:
+			reg[int(code[count+1])] = float64(time.Now().Month())
+			count += 2
+		case dtd:
+			reg[int(code[count+1])] = float64(time.Now().Day())
+			count += 2
+		case tmh:
+			reg[int(code[count+1])] = float64(time.Now().Hour())
+			count += 2
+		case tmm:
+			reg[int(code[count+1])] = float64(time.Now().Minute())
+			count += 2
+		case tms:
+			reg[int(code[count+1])] = float64(time.Now().Second())
+			count += 2
+		case now:
+			reg[int(code[count+1])] = float64(time.Now().UTC().UnixNano())
 			count += 2
 
 		default:

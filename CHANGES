@@ -94,12 +94,24 @@ PC023:  2016-09-17
   jge idx     Jump if greater or equal
   jle idx     Jump if less or equal
   jne idx     Jump if not equal
+PC025:	2016-09-17
+  Adds an instruction for swapping.
+  swp reg reg Swaps the values of a and b
+PC027:	2016-09-17
+  Implements instructions for retrieving date and time.
+  dty	reg		reg := Current year
+  dtm	reg		reg := Current month
+  dtd	reg		reg := Current day
+  tmh	reg		reg := Current hour
+  tmm	reg		reg := Current minute
+  tms	reg		reg := Current seconds
+  now	reg		reg := Number of nanoseconds elapsed since January 1, 1970 UTC.
 
   2. Discarded
 
-PC007:  Needs more detail
+PC007:	Substituted by PC018
   Change parsing into compilation of a bytecode binary file.
-PC009:  Not an actual change
+PC009:	Not applicable
   Not a language change but change the convention for function calls so that the
   first four values passed to a function to be in the %0, %1, %2 and %3 registers
   respectively.
@@ -143,9 +155,6 @@ PC022:
   You can see all registers with  `r`
   You can see the top of the stack with 's'
   You can see the top n values of the stack with 's <n>'
-PC025:
-  Adds an instruction for swapping.
-  swp reg reg Swaps the values of a and b
 PC026:
   Implements heap style allocation.
   Heap style allocation can be done with the following instructions.
@@ -156,3 +165,12 @@ PC026:
   hld	rga	rgb		- Heap LoaD					- rgb := *rga
   hsv	rga	rgv		- Heap SaVe					- *rgb := rga
   hcp	rga	rgv		- Heap CoPy					- *rgb := *rga
+PC028:
+  Implements instructions for random number generation.
+  rns	reg		- Sets the random number generation seed to reg
+  rnd	reg		- Sets reg to a random number uniformily distributed within (0,1)
+  rnn	reg		- Sets reg to a random number extracted from a standard normal
+PC029:
+  Implements string handling.
+PC030:
+  Implements file IO.

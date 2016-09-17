@@ -29,9 +29,8 @@ val	0	%1	a := 1
 val	1	%2	b := 1
 val	1	%3	count := 2
 main:
-mov	%2	%4	tmp := b
-add	%1	%2	b := b + a
-mov	%4	%1	a := tmp
+swp	%1	%2
+add	%1	%2
 inc	%3
 cmp	%3	%0
 jne	main

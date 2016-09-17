@@ -110,6 +110,11 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
+		case "swp":
+			code = append(code, swp)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
+			count += 3
 		case "psh":
 			code = append(code, psh)
 			code = append(code, getRegister(ins[1], fileName, lineNumber))
@@ -266,6 +271,35 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 		case "dsp":
 			code = append(code, dsp)
 			code = append(code, float64(dataMap[ins[1]]))
+			count += 2
+
+		case "dty":
+			code = append(code, dty)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "dtm":
+			code = append(code, dtm)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "dtd":
+			code = append(code, dtd)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "tmh":
+			code = append(code, tmh)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "tmm":
+			code = append(code, tmm)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "tms":
+			code = append(code, tms)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "now":
+			code = append(code, now)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 
 		default:

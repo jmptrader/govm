@@ -9,6 +9,7 @@ const (
 
 	val
 	mov
+	swp
 	psh
 	pop
 
@@ -49,4 +50,12 @@ const (
 	shw
 	get
 	dsp
+
+	dty
+	dtm
+	dtd
+	tmh
+	tmm
+	tms
+	now
 )

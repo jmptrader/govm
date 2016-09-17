@@ -13,6 +13,7 @@ var b2s = map[float64]string{
 
 	val: "val",
 	mov: "mov",
+	swp: "swp",
 	psh: "psh",
 	pop: "pop",
 
@@ -53,6 +54,14 @@ var b2s = map[float64]string{
 	shw: "shw",
 	dsp: "dsp",
 	get: "get",
+
+	dty: "dty",
+	dtm: "dtm",
+	dtd: "dtd",
+	tmh: "tmh",
+	tmm: "tmm",
+	tms: "tms",
+	now: "now",
 }
 
 func debuggerError(msg string, code, val float64) {
@@ -91,6 +100,11 @@ func decode(code []float64) (ds []string) {
 			count += 3
 		case mov:
 			ds[count] = "mov"
+			ds[count+1] = dbgReg(code[count+1])
+			ds[count+2] = dbgLst(dbgReg(code[count+2]))
+			count += 3
+		case swp:
+			ds[count] = "swp"
 			ds[count+1] = dbgReg(code[count+1])
 			ds[count+2] = dbgLst(dbgReg(code[count+2]))
 			count += 3
@@ -243,6 +257,35 @@ func decode(code []float64) (ds []string) {
 		case dsp:
 			ds[count] = "dsp"
 			ds[count+1] = dbgLst(dbgIdx(code[count+1]))
+			count += 2
+
+		case dty:
+			ds[count] = "dty"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case dtm:
+			ds[count] = "dtm"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case dtd:
+			ds[count] = "dtd"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case tmh:
+			ds[count] = "tmh"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case tmm:
+			ds[count] = "tmm"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case tms:
+			ds[count] = "tms"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case now:
+			ds[count] = "now"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
 			count += 2
 
 		default:

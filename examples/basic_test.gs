@@ -23,7 +23,7 @@ psh	%1
 
 val 	6	%3
 
-lab	popAndShow
+popAndShow:
 
 pop	%2
 shw	%2
@@ -60,9 +60,9 @@ dsp	newline
 
 hlt
 
-lab	countdownAndPrint
+countdownAndPrint:
 pop	%0
-lab	capLoop
+capLoop:
 shw	%0
 dec	%0
 cmz	%0

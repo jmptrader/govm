@@ -48,7 +48,7 @@ mov	%2	%7
 mov	%3	%2
 mov	%7	%3
 
-lab	main
+main:
 
 mul	%1	%4
 div	%3	%4
@@ -65,23 +65,23 @@ shw	%4
 jmp	exit
 
 
-lab	one
+one:
 dsp	result
 val	1	%0
 shw	%0
 jmp	exit
 
 
-lab	zero
+zero:
 dsp	result
 shw	%0
 jmp	exit
 
 
-lab	error
+error:
 dsp	error
 jmp	exit
 
-lab	exit
+exit:
 dsp	newline
 hlt

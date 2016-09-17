@@ -30,16 +30,16 @@ PC004:  2016-09-16
   in other files to be easily accessible with the current design.
 PC013:  2016-09-16
   Make it so the nop instruction actually compiles into nothing.
-
-	2. Proposed
-
-PC006:
+PC006:  2016-09-16
   Deprecate lab label definition in favor of the "<name>:" syntax. In the switch
   for the first word in the line, the default case should be changed to check if
   the last byte of the word equals ':', if so, do the same thing "lab" does except
   instead of a second word, use every byte but the last one of the first word.
   Note that because of how parsing works, any instructions on the same line as the
   label will be treated as comments.
+
+	2. Proposed
+
 PC007:
   Change parsing into compilation of a bytecode binary file.
 PC008:

@@ -1,4 +1,4 @@
 nop	Hello
 
-lab	main
+main:
 jmp	mian	Something's wrong here.

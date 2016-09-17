@@ -116,20 +116,9 @@ add %0	%1 Don't say goodbye.
 
 2.3 Jump statements
 
+Label syntax is specified by PC006.
 
-Jump statements have special syntax so that people don't have to manually
-count the number of instructions. For this purpose a pseudo-instruction is
-introduced.
-
-Labels are defined by
-
-lab <labelname>
-
-and jump statements are written as
-
-j** <labelname>
-
-and what they do is fairly intuitive.
+Jump syntax basically works as `j** <labelname>`.
 
 Label redefinition is specified by PC002.
 Undefined labels behavior is specified by PC014.

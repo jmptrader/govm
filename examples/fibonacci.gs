@@ -18,7 +18,7 @@ hlt
 
 
 
-lab	fib
+fib:
 pop	%0
 
 cmz	%0
@@ -40,10 +40,10 @@ pop	%1		R1 := fib(n-1)
 add	%1	%0	R0 := fib(n-1) + fib(n-2)
 ret
 
-lab	fibZero
+fibZero:
 val	0	%0
 ret
 
-lab	fibOne
+fibOne:
 val	1	%0
 ret

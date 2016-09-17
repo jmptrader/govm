@@ -191,6 +191,16 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			count += 2
 
 		default:
+			if ins[0][len(ins[0])-1] == ':' {
+				labName := ins[0][:len(ins[0])-1]
+				if labels[labName] != 0 {
+					compilerError("label redefinition", fileName,
+						labName, lineNumber)
+				}
+				labels[labName] = count
+				break
+			}
+
 			compilerError("invalid instruction", fileName, ins[0], lineNumber)
 		}
 	}

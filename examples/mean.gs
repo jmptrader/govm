@@ -15,7 +15,7 @@ dsp	prompt
 get	%5		This will hold the mean
 val	1	%6	This will hold the number of values
 
-lab	mainLoop
+mainLoop:
 
 cll	clearScreen
 dsp	result
@@ -31,9 +31,9 @@ div	%6	%5	mean := mean / n
 jmp	mainLoop
 hlt
 
-lab	clearScreen
+clearScreen:
 val	40	%0
-lab	clearScreenLoop
+clearScreenLoop:
 dsp	newline
 dec	%0
 cmz	%0

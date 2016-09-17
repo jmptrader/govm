@@ -21,14 +21,11 @@ PC014:  2016-09-16
   a compilation error and make sure the compilation error prints the line at fault.
 PC016:  2016-09-16
   Make it so compilation errors are file aware.
+PC017:  2016-09-16
+  Make it so label evaluation happens with a function call after parsing files.
 
 	2. Proposed
 
-PC004:
-  Allow multiple files. The first file is where execution begins, and each subse-
-  quent file acts as if appended to the first one. This allows for continuation of
-  execution through files, but it's intended to allow for function labels defined
-  in other files to be easily accessible with the current design.
 PC006:
   Deprecate lab label definition in favor of the "<name>:" syntax. In the switch
   for the first word in the line, the default case should be changed to check if

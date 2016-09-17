@@ -20,15 +20,20 @@ type labelInfo struct {
 	line int
 }
 
+var labels map[string]int
+var labelsPending map[int]labelInfo
+
+func init() {
+	labels = make(map[string]int)
+	labelsPending = make(map[int]labelInfo)
+}
+
 var data [dataSize]string
 
 func parser(f *os.File, fileName string) (code []float64) {
 	code = make([]float64, 0)
 
 	reader := bufio.NewReader(f)
-
-	labels := make(map[string]int)
-	labelsPending := make(map[int]labelInfo)
 
 	lineNumber := 0
 	count := 0
@@ -191,14 +196,16 @@ func parser(f *os.File, fileName string) (code []float64) {
 		}
 	}
 
+	return
+}
+
+func evaluateLabels(code []float64) {
 	for index, info := range labelsPending {
 		code[index] = float64(labels[info.name])
 		if code[index] == 0 {
 			compilerError("undefined label", info.file, info.name, info.line)
 		}
 	}
-
-	return
 }
 
 func getLiteral(ins string) float64 {

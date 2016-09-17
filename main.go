@@ -57,5 +57,7 @@ func main() {
 	// Debug
 	// fmt.Println(decode(code))
 
+	evaluateLabels(code)
+
 	run(code)
 }

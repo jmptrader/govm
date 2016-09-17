@@ -40,19 +40,21 @@ func main() {
 		exit(fmt.Sprintf("file \"%s\" could not be opened", os.Args[1]))
 	}
 
-	code := parser(file, os.Args[1])
+	code, count := parser(file, os.Args[1], 0)
 	file.Close()
 
 	// Extra files
-	// for _, arg := range os.Args[2:] {
-	// 	file, err := os.Open(arg)
-	// 	if err != nil {
-	//		exit(fmt.Sprintf("file \"%s\" could not be opened", arg))
-	//	}
-	//
-	//	code = append(code, parser(file)...)
-	//	file.Close()
-	// }
+	for _, arg := range os.Args[2:] {
+		file, err := os.Open(arg)
+		if err != nil {
+			exit(fmt.Sprintf("file \"%s\" could not be opened", arg))
+		}
+
+		var newCode []float64
+		newCode, count = parser(file, arg, count)
+		code = append(code, newCode...)
+		file.Close()
+	}
 
 	// Debug
 	// fmt.Println(decode(code))

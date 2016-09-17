@@ -159,3 +159,5 @@ least one string, the first one will be defaulted to.
 
 
 See PC004 in CHANGES for reference.
+Example of this:
+./govm examples/fibonacci/main.gs examples/fibonacci/fib.gs

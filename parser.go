@@ -30,13 +30,13 @@ func init() {
 
 var data [dataSize]string
 
-func parser(f *os.File, fileName string) (code []float64) {
+func parser(f *os.File, fileName string, start int) (code []float64, count int) {
 	code = make([]float64, 0)
 
 	reader := bufio.NewReader(f)
 
 	lineNumber := 0
-	count := 0
+	count = start
 
 	dataMap := make(map[string]int)
 	dataCurr := 0

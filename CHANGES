@@ -23,6 +23,11 @@ PC016:  2016-09-16
   Make it so compilation errors are file aware.
 PC017:  2016-09-16
   Make it so label evaluation happens with a function call after parsing files.
+PC004:  2016-09-16
+  Allow multiple files. The first file is where execution begins, and each subse-
+  quent file acts as if appended to the first one. This allows for continuation of
+  execution through files, but it's intended to allow for function labels defined
+  in other files to be easily accessible with the current design.
 
 	2. Proposed
 
@@ -31,8 +36,8 @@ PC006:
   for the first word in the line, the default case should be changed to check if
   the last byte of the word equals ':', if so, do the same thing "lab" does except
   instead of a second word, use every byte but the last one of the first word.
-  Note that because of how parsing works, a label cannot be immediately followed
-  by instructions. Well, it can, but they will be treated as comments.
+  Note that because of how parsing works, any instructions on the same line as the
+  label will be treated as comments.
 PC007:
   Change parsing into compilation of a bytecode binary file.
 PC008:

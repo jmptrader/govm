@@ -62,6 +62,10 @@ var b2s = map[float64]string{
 	tmm: "tmm",
 	tms: "tms",
 	now: "now",
+
+	sed: "sed",
+	rnd: "rnd",
+	rnn: "rnn",
 }
 
 func debuggerError(msg string, code, val float64) {
@@ -285,6 +289,19 @@ func decode(code []float64) (ds []string) {
 			count += 2
 		case now:
 			ds[count] = "now"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+
+		case sed:
+			ds[count] = "sed"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case rnd:
+			ds[count] = "rnd"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case rnn:
+			ds[count] = "rnn"
 			ds[count+1] = dbgLst(dbgReg(code[count+1]))
 			count += 2
 

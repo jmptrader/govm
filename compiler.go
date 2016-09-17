@@ -302,6 +302,19 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 
+		case "sed":
+			code = append(code, sed)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "rnd":
+			code = append(code, rnd)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+		case "rnn":
+			code = append(code, rnn)
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			count += 2
+
 		default:
 			if ins[0][len(ins[0])-1] == ':' {
 				labName := ins[0][:len(ins[0])-1]

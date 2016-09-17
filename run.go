@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"math"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
@@ -252,6 +253,16 @@ func run(code []float64) {
 			count += 2
 		case now:
 			reg[int(code[count+1])] = float64(time.Now().UTC().UnixNano())
+			count += 2
+
+		case sed:
+			rand.Seed(int64(reg[int(code[count+1])]))
+			count += 2
+		case rnd:
+			reg[int(code[count+1])] = rand.Float64()
+			count += 2
+		case rnn:
+			reg[int(code[count+1])] = rand.NormFloat64()
 			count += 2
 
 		default:

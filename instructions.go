@@ -58,4 +58,8 @@ const (
 	tmm
 	tms
 	now
+
+	sed
+	rnd
+	rnn
 )

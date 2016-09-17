@@ -13,7 +13,7 @@ func runtimeError(msg string, code, index float64) {
 	exit(fmt.Sprintf("runtime: %s [%0.f @ %0.f]", msg, code, index))
 }
 
-func run(code [maxCodeSize]float64) {
+func run(code []float64) {
 	count := 0
 	reader := bufio.NewReader(os.Stdin)
 
@@ -29,8 +29,10 @@ func run(code [maxCodeSize]float64) {
 	var stack [stackSize]float64
 	sp := 0
 
+	halted := false
+
 	for {
-		if count >= maxCodeSize {
+		if count >= len(code) || halted {
 			break
 		}
 
@@ -39,7 +41,7 @@ func run(code [maxCodeSize]float64) {
 
 		switch code[count] {
 		case hlt:
-			count = maxCodeSize
+			halted = true
 		case nop:
 			count += 1
 

@@ -15,7 +15,9 @@ func compilerError(msg, str string, line int) {
 
 var data [dataSize]string
 
-func parser(f *os.File) (code [maxCodeSize]float64) {
+func parser(f *os.File) (code []float64) {
+	code = make([]float64, 0)
+
 	reader := bufio.NewReader(f)
 
 	labels := make(map[string]int)
@@ -61,115 +63,120 @@ func parser(f *os.File) (code [maxCodeSize]float64) {
 		// Instructions
 
 		case "hlt":
-			code[count] = hlt
+			code = append(code, hlt)
 			count += 1
 		case "nop":
-			code[count] = nop
+			code = append(code, nop)
 			count += 1
 
 		case "cll":
-			code[count] = cll
+			code = append(code, cll)
+			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = ins[1]
 			count += 2
 		case "ret":
-			code[count] = ret
+			code = append(code, ret)
 			count += 1
 
 		case "val":
-			code[count] = val
-			code[count+1] = getLiteral(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, val)
+			code = append(code, getLiteral(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "mov":
-			code[count] = mov
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, mov)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "psh":
-			code[count] = psh
-			code[count+1] = getRegister(ins[1])
+			code = append(code, psh)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 		case "pop":
-			code[count] = pop
-			code[count+1] = getRegister(ins[1])
+			code = append(code, pop)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 
 		case "add":
-			code[count] = add
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, add)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "sub":
-			code[count] = sub
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, sub)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "mul":
-			code[count] = mul
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, mul)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "div":
-			code[count] = div
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, div)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "inc":
-			code[count] = inc
-			code[count+1] = getRegister(ins[1])
+			code = append(code, inc)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 		case "dec":
-			code[count] = dec
-			code[count+1] = getRegister(ins[1])
+			code = append(code, dec)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 
 		case "flr":
-			code[count] = flr
-			code[count+1] = getRegister(ins[1])
+			code = append(code, flr)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 		case "cel":
-			code[count] = cel
-			code[count+1] = getRegister(ins[1])
+			code = append(code, cel)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 
 		case "jmp":
-			code[count] = jmp
+			code = append(code, jmp)
+			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = ins[1]
 			count += 2
 		case "jlt":
-			code[count] = jlt
+			code = append(code, jlt)
+			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = ins[1]
 			count += 2
 		case "jeq":
-			code[count] = jeq
+			code = append(code, jeq)
+			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = ins[1]
 			count += 2
 		case "jgt":
-			code[count] = jgt
+			code = append(code, jgt)
+			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = ins[1]
 			count += 2
 
 		case "cmp":
-			code[count] = cmp
-			code[count+1] = getRegister(ins[1])
-			code[count+2] = getRegister(ins[2])
+			code = append(code, cmp)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
 			count += 3
 		case "cmz":
-			code[count] = cmz
-			code[count+1] = getRegister(ins[1])
+			code = append(code, cmz)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 
 		case "shw":
-			code[count] = shw
-			code[count+1] = getRegister(ins[1])
+			code = append(code, shw)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 		case "get":
-			code[count] = get
-			code[count+1] = getRegister(ins[1])
+			code = append(code, get)
+			code = append(code, getRegister(ins[1]))
 			count += 2
 		case "dsp":
-			code[count] = dsp
-			code[count+1] = float64(dataMap[ins[1]])
+			code = append(code, dsp)
+			code = append(code, float64(dataMap[ins[1]]))
 			count += 2
 
 		default:

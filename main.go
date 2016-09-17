@@ -11,7 +11,6 @@ func exit(msg string) {
 }
 
 const (
-	maxCodeSize   = 256
 	regCount      = 16
 	dataSize      = 64
 	stackSize     = 256
@@ -19,7 +18,7 @@ const (
 )
 
 func main() {
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		exit("incorrect number of arguments")
 	}
 
@@ -28,17 +27,29 @@ func main() {
 		os.Exit(0)
 	}
 
-	if _, err := os.Stat(os.Args[1]); os.IsNotExist(err) {
-		exit("input file does not exist")
+	// Make sure all files exist
+	for _, arg := range os.Args[1:] {
+		if _, err := os.Stat(arg); os.IsNotExist(err) {
+			exit(fmt.Sprintf("file \"%s\" does not exist", arg))
+		}
 	}
 
+	// Main file
 	file, err := os.Open(os.Args[1])
 	if err != nil {
-		exit("could not open input file for reading")
+		exit(fmt.Sprintf("file \"%s\" could not be opened", os.Args[1]))
 	}
 
 	code := parser(file)
 	file.Close()
+
+	// Extra files
+	//for _, arg := range os.Args[2:] {
+	//	file, err := os.Open(arg)
+	//	if err != nil {
+	//		exit(fmt.Sprintf("file \"%s\" could not be opened", arg))
+	//	}
+	//}
 
 	// Debug
 	// fmt.Println(decode(code))

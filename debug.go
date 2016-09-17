@@ -39,11 +39,12 @@ var b2s = map[float64]string{
 	get: "get",
 }
 
-func decode(code [maxCodeSize]float64) (ds [maxCodeSize]string) {
+func decode(code []float64) (ds []string) {
+	ds = make([]string, len(code))
 	count := 0
 
 	for {
-		if count >= maxCodeSize {
+		if count >= len(code) {
 			break
 		}
 

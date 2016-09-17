@@ -131,11 +131,10 @@ j** <labelname>
 
 and what they do is fairly intuitive.
 
-Label redefinition is a compilation error.
+Label redefinition is specified by PC002.
+Undefined labels behavior is specified by PC014.
 
-Also, jumps to labels that preceed no instruction or preceed the first
-instruction is currently undefined behavior to make my life easier and
-they're unecessary.
+Also, jumps to labels that preceed no instruction is currently undefined behavior.
 
 2.4 Constant strings
 
@@ -157,5 +156,6 @@ If you don't it will be actually set as 0, so as long as you defined at
 least one string, the first one will be defaulted to.
 
 2.5 Multiple files
+
 
 See PC004 in CHANGES for reference.

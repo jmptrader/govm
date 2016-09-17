@@ -16,6 +16,9 @@ PC005:  2016-09-16
 PC015:  2015-09-16
   Remove any restriction on code size and make everything dynamic. I can afford to
   just append at each new instruction in the parsing step.
+PC014:  2015-09-16
+  Make it so referencing an undefined label OR a label for the 0-th address is
+  a compilation error and make sure the compilation error prints the line at fault.
 
 	2. Proposed
 
@@ -74,6 +77,3 @@ PC012:
   cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
 PC013:
   Make it so the nop instruction actually compiles into nothing.
-PC014:
-  Make it so referencing an undefined label OR a label for the 0-th address is
-  a compilation error.

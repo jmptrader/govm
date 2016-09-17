@@ -13,6 +13,12 @@ func compilerError(msg, str string, line int) {
 	exit(fmt.Sprintf("compiler: %s [%s] at line %d", msg, str, line))
 }
 
+// We use this so that if a compilation error occurr we know the faulty line
+type labelInfo struct {
+	name string
+	line int
+}
+
 var data [dataSize]string
 
 func parser(f *os.File) (code []float64) {
@@ -21,7 +27,7 @@ func parser(f *os.File) (code []float64) {
 	reader := bufio.NewReader(f)
 
 	labels := make(map[string]int)
-	labelsPending := make(map[int]string)
+	labelsPending := make(map[int]labelInfo)
 
 	lineNumber := 0
 	count := 0
@@ -72,7 +78,7 @@ func parser(f *os.File) (code []float64) {
 		case "cll":
 			code = append(code, cll)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = ins[1]
+			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
 			count += 2
 		case "ret":
 			code = append(code, ret)
@@ -138,22 +144,22 @@ func parser(f *os.File) (code []float64) {
 		case "jmp":
 			code = append(code, jmp)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = ins[1]
+			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
 			count += 2
 		case "jlt":
 			code = append(code, jlt)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = ins[1]
+			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
 			count += 2
 		case "jeq":
 			code = append(code, jeq)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = ins[1]
+			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
 			count += 2
 		case "jgt":
 			code = append(code, jgt)
 			code = append(code, 0.0) // Placeholder
-			labelsPending[count+1] = ins[1]
+			labelsPending[count+1] = labelInfo{ins[1], lineNumber}
 			count += 2
 
 		case "cmp":
@@ -184,8 +190,11 @@ func parser(f *os.File) (code []float64) {
 		}
 	}
 
-	for index, label := range labelsPending {
-		code[index] = float64(labels[label])
+	for index, info := range labelsPending {
+		code[index] = float64(labels[info.name])
+		if code[index] == 0 {
+			compilerError("undefined label", info.name, info.line)
+		}
 	}
 
 	return

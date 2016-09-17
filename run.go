@@ -93,6 +93,36 @@ func run(code []float64) {
 		case cel:
 			reg[int(code[count+1])] = math.Ceil(reg[int(code[count+1])])
 			count += 2
+		case abs:
+			reg[int(code[count+1])] = math.Abs(reg[int(code[count+1])])
+			count += 2
+		case sqr:
+			reg[int(code[count+1])] = math.Sqrt(reg[int(code[count+1])])
+			count += 2
+		case sin:
+			reg[int(code[count+1])] = math.Sin(reg[int(code[count+1])])
+			count += 2
+		case cos:
+			reg[int(code[count+1])] = math.Cos(reg[int(code[count+1])])
+			count += 2
+		case tan:
+			reg[int(code[count+1])] = math.Tan(reg[int(code[count+1])])
+			count += 2
+		case exp:
+			reg[int(code[count+1])] = math.Exp(reg[int(code[count+1])])
+			count += 2
+		case log:
+			reg[int(code[count+1])] = math.Log(reg[int(code[count+1])])
+			count += 2
+		case gam:
+			reg[int(code[count+1])] = math.Gamma(reg[int(code[count+1])])
+			count += 2
+		case pow:
+			reg[int(code[count+2])] = math.Pow(reg[int(code[count+2])], reg[int(code[count+1])])
+			count += 2
+		case pwa:
+			reg[int(code[count+2])] = math.Pow(reg[int(code[count+1])], reg[int(code[count+2])])
+			count += 2
 
 		case jmp:
 			count = int(code[count+1])

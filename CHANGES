@@ -37,28 +37,35 @@ PC006:  2016-09-16
   instead of a second word, use every byte but the last one of the first word.
   Note that because of how parsing works, any instructions on the same line as the
   label will be treated as comments.
+PC010:  2016-09-16
+  Implement a set of mathematical functions as instructions.
+  abs reg     Absolute value
+  sqr reg     Square root
+  sin reg     Sine
+  cos reg     Cosine
+  tan reg     Tangent
+  exp reg     Exponential
+  log reg     Natural logarithm
+  gam reg     Gamma
+  pow reg reg Sets b to the value of b^a
+  pwa reg reg Sets b to the value of a^b
+  These should be implemented as basic function calls to the math stdlib module.
 
-	2. Proposed
+  2. Discarded
 
-PC007:
+PC007:  Needs more detail
   Change parsing into compilation of a bytecode binary file.
+PC009:  Not an actual change
+  Not a language change but change the convention for function calls so that the
+  first four values passed to a function to be in the %0, %1, %2 and %3 registers
+  respectively.
+
+	3. Proposed
+
 PC008:
   Implement a provisionary way to access argument calls. Becaause of the current
   instruction set should only allow double precision numbers, since for strings
   the only possible functionality would be to echo them.
-PC010:
-  Implement a set of mathematical functions as instructions.
-  abs	reg		Absolute value
-  sqr	reg		Square root
-  sin	reg		Sine
-  cos	reg		Cosine
-  tan	reg		Tangent
-  exp	reg		Exponential
-  log	reg		Natural logarithm
-  gam	reg		Gamma
-  pow	reg	reg	Sets b to the value of b^a
-  pwa	reg	reg	Sets b to the value of a^b
-  These should be implemented as basic function calls to the math stdlib module.
 PC011:
   Having stack frame manipulation in mind the instructions adl and sul should be
   added. They do the same thing as add and sub, except the first argument is a li-

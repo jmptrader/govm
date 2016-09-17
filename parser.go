@@ -145,6 +145,48 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, cel)
 			code = append(code, getRegister(ins[1]))
 			count += 2
+		case "abs":
+			code = append(code, abs)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "sqr":
+			code = append(code, sqr)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "sin":
+			code = append(code, sin)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "cos":
+			code = append(code, cos)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "tan":
+			code = append(code, tan)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "exp":
+			code = append(code, exp)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "log":
+			code = append(code, log)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "gam":
+			code = append(code, gam)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "pow":
+			code = append(code, pow)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
+			count += 3
+		case "pwa":
+			code = append(code, pwa)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
+			count += 3
 
 		case "jmp":
 			code = append(code, jmp)

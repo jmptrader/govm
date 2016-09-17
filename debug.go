@@ -25,6 +25,16 @@ var b2s = map[float64]string{
 
 	flr: "flr",
 	cel: "cel",
+	abs: "abs",
+	sqr: "sqr",
+	sin: "sin",
+	cos: "cos",
+	tan: "tan",
+	exp: "exp",
+	log: "log",
+	gam: "gam",
+	pow: "pow",
+	pwa: "pwa",
 
 	jmp: "jmp",
 	jlt: "jlt",
@@ -120,6 +130,48 @@ func decode(code []float64) (ds []string) {
 			ds[count] = "cel"
 			ds[count+1] = dbgLst(dbgReg(code[count+1]))
 			count += 2
+		case abs:
+			ds[count] = "abs"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case sqr:
+			ds[count] = "sqr"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case sin:
+			ds[count] = "sin"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case cos:
+			ds[count] = "cos"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case tan:
+			ds[count] = "tan"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case exp:
+			ds[count] = "exp"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case log:
+			ds[count] = "log"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case gam:
+			ds[count] = "gam"
+			ds[count+1] = dbgLst(dbgReg(code[count+1]))
+			count += 2
+		case pow:
+			ds[count] = "pow"
+			ds[count+1] = dbgReg(code[count+1])
+			ds[count+2] = dbgLst(dbgReg(code[count+2]))
+			count += 3
+		case pwa:
+			ds[count] = "pwa"
+			ds[count+1] = dbgReg(code[count+1])
+			ds[count+2] = dbgLst(dbgReg(code[count+2]))
+			count += 3
 
 		case jmp:
 			ds[count] = "jmp"

@@ -21,6 +21,16 @@ const (
 
 	flr
 	cel
+	abs
+	sqr
+	sin
+	cos
+	tan
+	exp
+	log
+	gam
+	pow
+	pwa
 
 	jmp
 	jlt

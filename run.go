@@ -68,17 +68,17 @@ func run(code []float64) {
 			reg[int(code[count+1])] = stack[sp]
 			count += 2
 
-		//case rac:
-		//	reg[int(code[count+1])] = float64(len(os.Args))
-		//	count += 2
-		//case rad:
-		//	val, err := strconv.ParseFloat(os.Args[int(reg[int(code[count+1])])], 64)
-		//	if err != nil {
-		//		runtimeError("invalid number", rad, float64(count))
-		//		break
-		//	}
-		//	reg[int(code[count+2])] = val
-		//	count += 3
+		case rac:
+			reg[int(code[count+1])] = float64(len(os.Args)) - 2
+			count += 2
+		case rad:
+			val, err := strconv.ParseFloat(os.Args[int(reg[int(code[count+1])])+2], 64)
+			if err != nil {
+				runtimeError("invalid number", rad, float64(count))
+				break
+			}
+			reg[int(code[count+2])] = val
+			count += 3
 
 		case add:
 			reg[int(code[count+2])] += reg[int(code[count+1])]

@@ -57,11 +57,11 @@ PC019:  2016-09-16
   to the binary file.
   The encoding is little endian as opposed to big endian so that the files are smaller :)
   Here's the binary format:
-  First 8 bytes: header, currently fixed to be a int64 equal to 10002.
+  First 8 bytes: int64 header, currently equal to 10002.
   Next 8 bytes: size of the code.
   Variable size section containing all of the binary code.
-  Next 8 bytes: int64 containing the size of the data stack denoted by `n`.
-  Variable size section containing all `n` strings of the data stack, all ended
+  Next 8 bytes: int64 containing the size of the data stack.
+  Variable size section containing all strings of the data stack, all ended
   by a '\n' byte.
 PC018:  2016-09-16
   This PC specifies compilation and execution steps.
@@ -71,19 +71,7 @@ PC018:  2016-09-16
   For execution run:
   govm binary_name [arguments]
   This depends on PC019.
-
-  2. Discarded
-
-PC007:  Needs more detail
-  Change parsing into compilation of a bytecode binary file.
-PC009:  Not an actual change
-  Not a language change but change the convention for function calls so that the
-  first four values passed to a function to be in the %0, %1, %2 and %3 registers
-  respectively.
-
-	3. Proposed
-
-PC008:
+PC008:  2016-09-16
   Implement a provisionary way to access argument calls. Becaause of the current
   instruction set should only allow double precision numbers, since for strings
   the only possible functionality would be to echo them.
@@ -96,6 +84,18 @@ PC008:
   will be implemented such that it's first argument is the register to receive
   the argument count.
   This depends on PC018.
+
+  2. Discarded
+
+PC007:  Needs more detail
+  Change parsing into compilation of a bytecode binary file.
+PC009:  Not an actual change
+  Not a language change but change the convention for function calls so that the
+  first four values passed to a function to be in the %0, %1, %2 and %3 registers
+  respectively.
+
+	3. Proposed
+
 PC011:
   Having stack frame manipulation in mind the instructions adl and sul should be
   added. They do the same thing as add and sub, except the first argument is a li-

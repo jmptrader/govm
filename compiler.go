@@ -111,15 +111,15 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, getRegister(ins[1]))
 			count += 2
 
-		//case "rac":
-		//	code = append(code, rac)
-		//	code = append(code, getRegister(ins[1]))
-		//	count += 2
-		//case "rad":
-		//	code = append(code, rad)
-		//	code = append(code, getRegister(ins[1]))
-		//	code = append(code, getRegister(ins[2]))
-		//	count += 3
+		case "rac":
+			code = append(code, rac)
+			code = append(code, getRegister(ins[1]))
+			count += 2
+		case "rad":
+			code = append(code, rad)
+			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[2]))
+			count += 3
 
 		case "add":
 			code = append(code, add)

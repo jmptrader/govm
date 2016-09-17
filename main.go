@@ -73,6 +73,9 @@ func main() {
 	} else {
 		code := loadFile(os.Args[1])
 
+		// Debug
+		// fmt.Println(decode(code))
+
 		run(code)
 	}
 }

@@ -4,20 +4,20 @@ str	result		Fib(n) is
 str	newline
 str	needargs	fib: Expected exactly one numeric argument.
 
-nop	val	1	%1
-nop	rac	%2
-nop	cmp	%1	%2
-nop	jgt	needargs
-nop	jlt	needargs
+val	1	%1
+rac	%2
+cmp	%1	%2
+jgt	needargs
+jlt	needargs
 
 dsp	welcome0
 dsp	welcome1
 
-nop	dec	%1
-nop	rad	%1	%0
-nop	cel	%0
+dec	%1
+rad	%1	%0
+cel	%0
 
-get	%0
+nop get	%0
 
 psh	%0
 cll	fib

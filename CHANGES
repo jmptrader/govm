@@ -28,6 +28,8 @@ PC004:  2016-09-16
   quent file acts as if appended to the first one. This allows for continuation of
   execution through files, but it's intended to allow for function labels defined
   in other files to be easily accessible with the current design.
+PC013:  2016-09-16
+  Make it so the nop instruction actually compiles into nothing.
 
 	2. Proposed
 
@@ -44,10 +46,6 @@ PC008:
   Implement a provisionary way to access argument calls. Becaause of the current
   instruction set should only allow double precision numbers, since for strings
   the only possible functionality would be to echo them.
-PC009:
-  Not a language change but change the convention for function calls so that the
-  first four values passed to a function to be in the %0, %1, %2 and %3 registers
-  respectively.
 PC010:
   Implement a set of mathematical functions as instructions.
   abs	reg		Absolute value
@@ -79,5 +77,3 @@ PC012:
   sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
   lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
   cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
-PC013:
-  Make it so the nop instruction actually compiles into nothing.

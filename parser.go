@@ -78,8 +78,7 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, hlt)
 			count += 1
 		case "nop":
-			code = append(code, nop)
-			count += 1
+			break
 
 		case "cll":
 			code = append(code, cll)

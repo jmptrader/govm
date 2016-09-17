@@ -1,49 +1,53 @@
-str	welcome0	Fibonacci program.
-str	welcome1	Enter a number and I'll tell you Fib(n)
-str	result		Fib(n) is
-str	newline
+str	string0	The value of the fibonacci sequence for the
+str	string1	-th value of the series is
 
-dsp	welcome0
-dsp	welcome1
-get	%0
-psh	%0
-cll	fib
-dsp	newline
-dsp	result
-shw	%0
-dsp	newline
-hlt
+str	argerr	expected exactly one argument
+str	sgnerr	value needs to be non-negative
 
+val	1	%0	Check if received exactly one argument
+rac	%1
+cmp	%1	%0
+jne	argerr
 
-
-
-
-fib:
-pop	%0
-
+val	0	%1	Get argument and check if it's not negative
+rad	%1	%0
+flr	%0
 cmz	%0
-jeq	fibZero
+jlt	sgnerr
+
+dsp	string0		Display pre-computation messages
+shw	%0
+dsp	string1
+
+jeq	retone		Special cases for n = 0 or n = 1
 val	1	%1
 cmp	%0	%1
-jeq	fibOne
+jeq	retone
 
-dec	%0		R0 := n-1
-psh	%0		STACK: [n-1 | ...]
-psh	%0		STACK: [n-1 | n-1 | ...]
-cll	fib		STACK: [n-1 | ...] ; R0 := fib(n-1)
-pop	%1		STACK: [...] R1 := n-1
-dec	%1		R1 := n-2
-psh	%0		STACK: [fib(n-1) | ...]
-psh	%1		STACK: [fib(n-1) | n-2 | ...]
-cll	fib		STACK: [fib(n-1) | ...] ; R0 := fib(n-2)
-pop	%1		R1 := fib(n-1)
-add	%1	%0	R0 := fib(n-1) + fib(n-2)
-ret
+nop			Main computation loop
+val	0	%1	a := 1
+val	1	%2	b := 1
+val	1	%3	count := 2
+main:
+mov	%2	%4	tmp := b
+add	%1	%2	b := b + a
+mov	%4	%1	a := tmp
+inc	%3
+cmp	%3	%0
+jne	main
 
-fibZero:
-val	0	%0
-ret
+shw	%2
+hlt
 
-fibOne:
+retone:
 val	1	%0
-ret
+shw	%0
+hlt
+
+argerr:
+dsp	argerr
+hlt
+
+sgnerr:
+dsp	sgnerr
+hlt

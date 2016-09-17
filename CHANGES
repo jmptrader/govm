@@ -84,6 +84,16 @@ PC008:  2016-09-16
   will be implemented such that it's first argument is the register to receive
   the argument count.
   This depends on PC018.
+PC020:  2016-09-17
+  Make it so the exit from getLiteral and getRegister in compiler.go become
+  actual compiler errors that report file name and line number.
+PC021:  2016-09-17
+  Remove all panic calls.
+PC023:  2016-09-17
+  Add other jump instructions.
+  jge idx     Jump if greater or equal
+  jle idx     Jump if less or equal
+  jne idx     Jump if not equal
 
   2. Discarded
 
@@ -93,6 +103,20 @@ PC009:  Not an actual change
   Not a language change but change the convention for function calls so that the
   first four values passed to a function to be in the %0, %1, %2 and %3 registers
   respectively.
+PC012:  More thought out instructions
+  Implements general memory access.
+  Add two new registers intented for "stack frame", although the stack from psh
+  and pop will be isolated from this one, denoted by %b for base and %c for the
+  current top value.
+  Implement four instructions for access of local stack frame memory.
+  lsv reg lit Saves value of reg into mem[%c-lit]
+  lld lit reg Loads value of mem[%c-lit] into reg
+  lcp lit lit Copies value of mem[%c-lit] into mem[%c-lit]
+  gla lit reg Gets the literal address of the mem[%c-lit]
+  Implement cpy instructions for literal access.
+  sav reg reg Saves value of a into mem[b] where b is a litaddr.
+  lod reg reg Loads value of mem[a] into b where a is a litaddr.
+  cpy reg reg Copies the value of mem[a] to mem[b]. Both are litaddr.
 
 	3. Proposed
 
@@ -100,22 +124,5 @@ PC011:
   Having stack frame manipulation in mind the instructions adl and sul should be
   added. They do the same thing as add and sub, except the first argument is a li-
   teral.
-PC012:
-  Implements general memory access.
-  Add two new registers intented for "stack frame", although the stack from psh
-  and pop will be isolated from this one, denoted by %b for base and %c for the
-  current top value.
-  Implement four instructions for access of local stack frame memory.
-  lsv	reg	lit	Saves value of reg into mem[%c-lit]
-  lld	lit	reg	Loads value of mem[%c-lit] into reg
-  lcp	lit	lit	Copies value of mem[%c-lit] into mem[%c-lit]
-  gla	lit	reg	Gets the literal address of the mem[%c-lit]
-  Implement cpy instructions for literal access.
-  sav	reg	reg	Saves value of a into mem[b] where b is a litaddr.
-  lod	reg	reg	Loads value of mem[a] into b where a is a litaddr.
-  cpy	reg	reg	Copies the value of mem[a] to mem[b]. Both are litaddr.
-PC020:
-  Make it so the exit from getLiteral and getRegister in compiler.go become
-  actual compiler errors that report file name and line number.
-PC021:
-  Remove all panic calls.
+PC022:
+  Make a proper debugging mode with support for breakpoints and step by step execution.

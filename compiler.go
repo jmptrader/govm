@@ -14,6 +14,14 @@ func compilerError(msg, file, str string, line int) {
 	exit(fmt.Sprintf("compiler: %s [%s] at line %d in %s", msg, str, line, file))
 }
 
+func encoderError(msg string) {
+	exit(fmt.Sprintf("encoder: %s", msg))
+}
+
+func decoderError(msg string) {
+	exit(fmt.Sprintf("decoder: %s", msg))
+}
+
 // We use this so that if a compilation error occurr we know the faulty line
 type labelInfo struct {
 	name string
@@ -50,7 +58,7 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			if err == io.EOF {
 				break
 			} else {
-				panic(err)
+				compilerError("failed line read", fileName, "ReadString()", lineNumber)
 			}
 		}
 		lineNumber += 1
@@ -94,111 +102,111 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 
 		case "val":
 			code = append(code, val)
-			code = append(code, getLiteral(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getLiteral(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "mov":
 			code = append(code, mov)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "psh":
 			code = append(code, psh)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "pop":
 			code = append(code, pop)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 
 		case "rac":
 			code = append(code, rac)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "rad":
 			code = append(code, rad)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 
 		case "add":
 			code = append(code, add)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "sub":
 			code = append(code, sub)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "mul":
 			code = append(code, mul)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "div":
 			code = append(code, div)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "inc":
 			code = append(code, inc)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "dec":
 			code = append(code, dec)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 
 		case "flr":
 			code = append(code, flr)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "cel":
 			code = append(code, cel)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "abs":
 			code = append(code, abs)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "sqr":
 			code = append(code, sqr)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "sin":
 			code = append(code, sin)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "cos":
 			code = append(code, cos)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "tan":
 			code = append(code, tan)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "exp":
 			code = append(code, exp)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "log":
 			code = append(code, log)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "gam":
 			code = append(code, gam)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "pow":
 			code = append(code, pow)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "pwa":
 			code = append(code, pwa)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 
 		case "jmp":
@@ -221,24 +229,39 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			code = append(code, 0.0) // Placeholder
 			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
 			count += 2
+		case "jge":
+			code = append(code, jge)
+			code = append(code, 0.0) // Placeholder
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
+			count += 2
+		case "jle":
+			code = append(code, jle)
+			code = append(code, 0.0) // Placeholder
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
+			count += 2
+		case "jne":
+			code = append(code, jne)
+			code = append(code, 0.0) // Placeholder
+			labelsPending[count+1] = labelInfo{ins[1], fileName, lineNumber}
+			count += 2
 
 		case "cmp":
 			code = append(code, cmp)
-			code = append(code, getRegister(ins[1]))
-			code = append(code, getRegister(ins[2]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
+			code = append(code, getRegister(ins[2], fileName, lineNumber))
 			count += 3
 		case "cmz":
 			code = append(code, cmz)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 
 		case "shw":
 			code = append(code, shw)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "get":
 			code = append(code, get)
-			code = append(code, getRegister(ins[1]))
+			code = append(code, getRegister(ins[1], fileName, lineNumber))
 			count += 2
 		case "dsp":
 			code = append(code, dsp)
@@ -249,8 +272,7 @@ func parser(f *os.File, fileName string, start int) (code []float64, count int) 
 			if ins[0][len(ins[0])-1] == ':' {
 				labName := ins[0][:len(ins[0])-1]
 				if labels[labName] != 0 {
-					compilerError("label redefinition", fileName,
-						labName, lineNumber)
+					compilerError("label redefinition", fileName, labName, lineNumber)
 				}
 				labels[labName] = count
 				break
@@ -272,19 +294,19 @@ func evaluateLabels(code []float64) {
 	}
 }
 
-func getLiteral(ins string) float64 {
+func getLiteral(ins, file string, line int) float64 {
 	lit, err := strconv.ParseFloat(ins, 64)
 	if err != nil {
-		panic(err)
+		compilerError("invalid literal", file, ins, line)
 	}
 	return lit
 }
 
-func getRegister(ins string) float64 {
+func getRegister(ins, file string, line int) float64 {
 	tins := ins[1:len(ins)]
 	reg, err := strconv.ParseFloat(tins, 64)
 	if err != nil {
-		exit(fmt.Sprintf("%s is an invalid register", ins))
+		compilerError("invalid register", file, ins, line)
 	}
 	return float64(reg)
 }
@@ -293,7 +315,7 @@ func writeFile(code []float64, fileName string) {
 	file, err := os.Create(fileName)
 	defer file.Close()
 	if err != nil {
-		compilerError("could not create binary file", fileName, "os.Create", 0)
+		encoderError("could not create binary file")
 	}
 
 	// Header
@@ -301,7 +323,7 @@ func writeFile(code []float64, fileName string) {
 	headerValue = 10002
 	err = binary.Write(file, binary.LittleEndian, headerValue)
 	if err != nil {
-		panic(err)
+		encoderError("could not write header")
 	}
 
 	// Code size
@@ -309,14 +331,14 @@ func writeFile(code []float64, fileName string) {
 	codeSize = int64(len(code))
 	err = binary.Write(file, binary.LittleEndian, codeSize)
 	if err != nil {
-		panic(err)
+		encoderError("could not write code size")
 	}
 
 	// Code
 	for i := 0; i < len(code); i++ {
 		err = binary.Write(file, binary.LittleEndian, code[i])
 		if err != nil {
-			panic(err)
+			encoderError("could not write code entry")
 		}
 	}
 
@@ -325,14 +347,14 @@ func writeFile(code []float64, fileName string) {
 	dataStackSize = int64(dataCurr)
 	err = binary.Write(file, binary.LittleEndian, dataStackSize)
 	if err != nil {
-		panic(err)
+		encoderError("could not write data size")
 	}
 
 	// Data
 	for i := 0; i < dataCurr; i++ {
 		_, err = fmt.Fprintln(file, data[i])
 		if err != nil {
-			panic(err)
+			encoderError("could not write data entry")
 		}
 	}
 }
@@ -341,42 +363,42 @@ func loadFile(fileName string) (code []float64) {
 	file, err := os.Open(fileName)
 	defer file.Close()
 	if err != nil {
-		panic(err)
+		decoderError("could not open file")
 	}
 
 	var headerValue int64
 	err = binary.Read(file, binary.LittleEndian, &headerValue)
 	if err != nil {
-		panic(err)
+		decoderError("could not read header")
 	}
 	if headerValue != 10002 {
-		exit("invalid header for binary file")
+		decoderError("invalid header value")
 	}
 
 	var codeSize int64
 	err = binary.Read(file, binary.LittleEndian, &codeSize)
 	if err != nil {
-		panic(err)
+		decoderError("could not read code size")
 	}
 	code = make([]float64, codeSize)
 	for i := 0; i < int(codeSize); i++ {
 		err = binary.Read(file, binary.LittleEndian, &code[i])
 		if err != nil {
-			panic(err)
+			decoderError("could not read code entry")
 		}
 	}
 
 	var dataStackSize int64
 	err = binary.Read(file, binary.LittleEndian, &dataStackSize)
 	if err != nil {
-		panic(err)
+		decoderError("could not read data size")
 	}
 
 	r := bufio.NewReader(file)
 	for i := 0; i < int(dataStackSize); i++ {
 		str, err := r.ReadString('\n')
 		if err != nil {
-			panic(err)
+			decoderError("could not read data entry")
 		}
 		data = append(data, str[:len(str)-1])
 	}

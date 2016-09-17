@@ -43,6 +43,9 @@ var b2s = map[float64]string{
 	jlt: "jlt",
 	jeq: "jeq",
 	jgt: "jgt",
+	jge: "jge",
+	jle: "jle",
+	jne: "jne",
 
 	cmp: "cmp",
 	cmz: "cmz",
@@ -50,6 +53,10 @@ var b2s = map[float64]string{
 	shw: "shw",
 	dsp: "dsp",
 	get: "get",
+}
+
+func debuggerError(msg string, code, val float64) {
+	exit(fmt.Sprintf("debugger: %s [%0.f@%0.f]", msg, code, val))
 }
 
 func decode(code []float64) (ds []string) {
@@ -202,6 +209,18 @@ func decode(code []float64) (ds []string) {
 			ds[count] = "jgt"
 			ds[count+1] = dbgLst(dbgIdx(code[count+1]))
 			count += 2
+		case jge:
+			ds[count] = "jge"
+			ds[count+1] = dbgLst(dbgIdx(code[count+1]))
+			count += 2
+		case jle:
+			ds[count] = "jle"
+			ds[count+1] = dbgLst(dbgIdx(code[count+1]))
+			count += 2
+		case jne:
+			ds[count] = "jne"
+			ds[count+1] = dbgLst(dbgIdx(code[count+1]))
+			count += 2
 
 		case cmp:
 			ds[count] = "cmp"
@@ -227,7 +246,7 @@ func decode(code []float64) (ds []string) {
 			count += 2
 
 		default:
-			panic(fmt.Sprintf("Decoding error %f", code[count]))
+			debuggerError("invalid instruction", code[count], float64(count))
 		}
 	}
 

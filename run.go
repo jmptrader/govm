@@ -10,7 +10,7 @@ import (
 )
 
 func runtimeError(msg string, code, index float64) {
-	exit(fmt.Sprintf("runtime: %s [%0.f @ %0.f]", msg, code, index))
+	exit(fmt.Sprintf("runtime: %s [%0.f@%0.f]", msg, code, index))
 }
 
 func run(code []float64) {
@@ -152,6 +152,24 @@ func run(code []float64) {
 			}
 		case jgt:
 			if fgt {
+				count = int(code[count+1])
+			} else {
+				count += 2
+			}
+		case jge:
+			if !flt {
+				count = int(code[count+1])
+			} else {
+				count += 2
+			}
+		case jle:
+			if !fgt {
+				count = int(code[count+1])
+			} else {
+				count += 2
+			}
+		case jne:
+			if !feq {
 				count = int(code[count+1])
 			} else {
 				count += 2

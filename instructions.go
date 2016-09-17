@@ -39,6 +39,9 @@ const (
 	jlt
 	jeq
 	jgt
+	jge
+	jle
+	jne
 
 	cmp
 	cmz
